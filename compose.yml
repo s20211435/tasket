@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  db:
+    image: mariadb:11.4.5
+    volumes:
+      - db-data:/var/lib/mysql
+    command:
+      - mariadbd
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_general_ci
+
+  web:
+    build: .
+    depends_on:
+      - db
+    environment:
+      TZ: Asia/Tokyo
+    ports:
+      - '3000:3000'
+    tty: true
+
+volumes:
+  db-data:

@@ -1,0 +1,19 @@
+FROM ruby:3.4.2
+
+# nodejsをインストールする
+RUN apt-get update -qq
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+&& apt-get install -y nodejs
+RUN npm install -g yarn nodemon sass
+
+RUN gem update --system
+RUN gem install bundler -v 2.6.6
+RUN gem install foreman
+
+# aliasの設定（自由に書き換えてください）
+RUN echo 'alias r="bundle exec rails"' >> ~/.bashrc
+RUN echo 'alias rs="bundle exec rails s -b 0.0.0.0 -p 3000"' >> ~/.bashrc
+RUN echo 'alias rc="bundle exec rails c"' >> ~/.bashrc
+RUN echo 'alias rdm="bundle exec rails db:migrate"' >> ~/.bashrc
+
+CMD ["./bin/dev"]

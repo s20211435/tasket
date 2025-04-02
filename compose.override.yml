@@ -1,0 +1,21 @@
+services:
+  db:
+    environment:
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 1
+    ports:
+      - "3306:3306"
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    command: /bin/sh -c "while :; do sleep 10; done"
+    ports:
+      - "3000:3000"
+    volumes:
+      - web-data:/root/i_to_u_web
+    environment:
+      DB_HOST: db
+
+volumes:
+  web-data:
