@@ -1,0 +1,47 @@
+{
+	"name": "i_to_u_web(webコンテナ)",
+
+	// 利用するcomposeファイルのパスを指定
+	"dockerComposeFile": [
+		"../compose.yml",
+		"../compose.override.yml"
+	],
+
+	// 利用するコンテナのサービス名を指定
+	"service": "web",
+
+	// 接続時にデフォルトで開くパスを指定
+	"workspaceFolder": "/root/i_to_u_web",
+
+	// 設定のカスタマイズ
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"files.encoding": "utf8",
+				"files.eol": "\n",
+				"files.insertFinalNewline": true,
+				"files.trimTrailingWhitespace": true,
+				"editor.tabSize": 2,
+				"editor.stickyScroll.enabled": true,
+				"[ruby]": {
+					"editor.defaultFormatter": "Shopify.ruby-lsp"
+				}
+			},
+			"extensions": [
+				"KoichiSasada.vscode-rdbg",
+				"ritwickdey.LiveServer",
+				"cpmcgrath.codealignment-vscode",
+				"eamodio.gitlens",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
+				"pavlitsky.yard",
+				"xyz.local-history",
+				"Shopify.ruby-lsp",
+				"streetsidesoftware.code-spell-checker",
+				"alefragnani.Bookmarks",
+				"oderwat.indent-rainbow",
+				"shardulm94.trailing-spaces"
+			]
+		}
+	}
+}
