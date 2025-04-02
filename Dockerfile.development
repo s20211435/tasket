@@ -6,6 +6,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
 && apt-get install -y nodejs
 RUN npm install -g yarn nodemon sass
 
+RUN apt-get install -y vim
+
 RUN gem update --system
 RUN gem install bundler -v 2.6.6
 RUN gem install foreman
