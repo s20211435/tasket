@@ -40,7 +40,8 @@
 				"streetsidesoftware.code-spell-checker",
 				"alefragnani.Bookmarks",
 				"oderwat.indent-rainbow",
-				"shardulm94.trailing-spaces"
+				"shardulm94.trailing-spaces",
+				"aliariff.slim-lint"
 			]
 		}
 	}
