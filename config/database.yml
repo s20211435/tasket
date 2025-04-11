@@ -19,14 +19,14 @@ default: &default
 
 development:
   <<: *default
-  database: i_to_u_web_development
+  database: tasket_web_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: i_to_u_web_test
+  database: tasket_web_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -51,18 +51,18 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: i_to_u_web_production
-    username: i_to_u_web
-    password: <%= ENV["I_TO_U_WEB_DATABASE_PASSWORD"] %>
+    database: tasket_web_production
+    username: tasket_web
+    password: <%= ENV["TASKET_U_WEB_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
-    database: i_to_u_web_production_cache
+    database: tasket_web_production_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
-    database: i_to_u_web_production_queue
+    database: tasket_web_production_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    database: i_to_u_web_production_cable
+    database: tasket_web_production_cable
     migrations_paths: db/cable_migrate

@@ -1,5 +1,5 @@
 {
-	"name": "i_to_u_web(webコンテナ)",
+	"name": "tasket_web(webコンテナ)",
 
 	// 利用するcomposeファイルのパスを指定
 	"dockerComposeFile": [
@@ -11,7 +11,7 @@
 	"service": "web",
 
 	// 接続時にデフォルトで開くパスを指定
-	"workspaceFolder": "/root/i_to_u_web",
+	"workspaceFolder": "/root/tasket_web",
 
 	// 設定のカスタマイズ
 	"customizations": {

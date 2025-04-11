@@ -13,7 +13,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - web-data:/root/i_to_u_web
+      - web-data:/root/tasket_web
     environment:
       DB_HOST: db
 
