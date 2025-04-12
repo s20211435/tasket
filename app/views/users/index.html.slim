@@ -1,0 +1,17 @@
+.container
+  h1.text-center.my-4 ユーザー管理画面
+  .text-end.mb-3
+    = link_to "新規作成", new_user_path, data: { turbo_frame: "user_form" }, class: "btn btn-primary"
+
+  .row.font-weight-bold.py-2
+    .col-2 ID
+    .col-2 名前
+    .col-3 Email
+    .col-2 権限
+    .col-3 操作
+
+  #users
+    - @users.each do |user|
+      = render partial: "user", locals: { user: user }
+
+  turbo-frame#user_form

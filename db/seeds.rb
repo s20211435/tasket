@@ -7,3 +7,19 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+# スーパーユーザーを作成
+User.create!(
+  email: "superuser@example.com",
+  password: "password",
+  password_confirmation: "password",
+  role: "superuser" # スーパーユーザーの役割を示す
+)
+
+# 一般ユーザーを作成
+User.create!(
+  email: "user@example.com",
+  password: "password",
+  password_confirmation: "password",
+  role: "user" # 一般ユーザーの役割を示す
+)

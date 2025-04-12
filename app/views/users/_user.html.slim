@@ -1,0 +1,8 @@
+.row.border-bottom.py-2[data-user-id="#{user.id}"]
+  .col-2 = user.id
+  .col-2 = user.name || "未設定"
+  .col-3 = user.email
+  .col-2 = t("user.roles.#{user.role}")
+  .col-3
+    = link_to "編集", edit_user_path(user), data: { turbo_frame: "user_form" }, class: "btn btn-secondary btn-sm mx-1"
+    = link_to "削除", user_path(user), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-danger btn-sm mx-1"

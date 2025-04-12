@@ -1,0 +1,18 @@
+= form_with model: user, url: user.persisted? ? user_path(user) : users_path, method: user.persisted? ? :patch : :post, local: true do |f|
+  .mb-3
+    = f.label :name, "名前"
+    = f.text_field :name, class: "form-control"
+  .mb-3
+    = f.label :email, "メールアドレス"
+    = f.email_field :email, class: "form-control"
+  .mb-3
+    = f.label :role, "権限"
+    = f.select :role, [["管理者", "superuser"], ["一般", "user"]], {}, class: "form-select"
+  .mb-3
+    = f.label :password, "パスワード"
+    = f.password_field :password, class: "form-control"
+  .mb-3
+    = f.label :password_confirmation, "パスワード確認"
+    = f.password_field :password_confirmation, class: "form-control"
+  = f.submit user.persisted? ? "更新" : "作成", class: "btn btn-primary"
+  = link_to "キャンセル", users_path, class: "btn btn-secondary ms-2"

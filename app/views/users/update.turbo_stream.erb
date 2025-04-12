@@ -1,0 +1,8 @@
+<turbo-stream action="replace" target="user_<%= @user.id %>">
+  <template>
+    <%= render partial: "users/user", formats: [:html], locals: { user: @user } %>
+  </template>
+</turbo-stream>
+
+<turbo-stream action="remove" target="user_form">
+</turbo-stream>
