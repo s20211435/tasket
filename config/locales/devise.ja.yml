@@ -1,0 +1,34 @@
+ja:
+  devise:
+    sessions:
+      signed_in: "ログインしました。"
+      signed_out: "ログアウトしました。"
+      already_signed_out: "すでにログアウトしています。"
+      title: "ログイン"
+      email: "メールアドレス"
+      password: "パスワード"
+      remember_me: "ログイン情報を記憶する"
+      submit: "ログイン"
+    registrations:
+      signed_up: "アカウント登録が完了しました。"
+      updated: "アカウント情報が更新されました。"
+      destroyed: "アカウントが削除されました。"
+      signed_up_but_inactive: "アカウント登録が完了しましたが、有効化されていません。"
+      signed_up_but_locked: "アカウント登録が完了しましたが、ロックされています。"
+      signed_up_but_unconfirmed: "確認メールを送信しました。メール内のリンクをクリックしてアカウントを有効化してください。"
+    passwords:
+      send_instructions: "パスワードリセットの手順をメールで送信しました。"
+      updated: "パスワードが更新されました。"
+    confirmations:
+      send_instructions: "確認メールを送信しました。"
+      confirmed: "メールアドレスが確認されました。"
+    unlocks:
+      send_instructions: "アカウントロック解除の手順をメールで送信しました。"
+      unlocked: "アカウントのロックが解除されました。"
+    failure:
+      unauthenticated: "ログインが必要です。"
+      invalid: "メールアドレスまたはパスワードが正しくありません。"
+      locked: "アカウントがロックされています。"
+      unconfirmed: "メールアドレスの確認が必要です。"
+      timeout: "セッションがタイムアウトしました。再度ログインしてください。"
+      inactive: "アカウントが無効です。"

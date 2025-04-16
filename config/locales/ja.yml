@@ -7,3 +7,29 @@ ja:
     roles:
       superuser: "管理者"
       user: "一般"
+  activerecord:
+    models:
+      product: 商品
+    attributes:
+      product:
+        name: 商品名
+        price: 価格
+        stock_quantity: 在庫数
+        description: 説明文
+    errors:
+      models:
+        product:
+          attributes:
+            name:
+              blank: 名前をを入力してください
+            price:
+              blank: 価格を入力してください
+              not_a_number: は数値で入力してください
+              greater_than_or_equal_to: は%{count}円以上の値を入力してください
+            stock_quantity:
+              blank: 数値を入力してください
+              not_a_number: は数値で入力してください
+              greater_than_or_equal_to: は%{count}以上の値を入力してください
+              not_an_integer: は整数で入力してください
+            description:
+              blank: 説明を入力してください

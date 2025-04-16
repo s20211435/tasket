@@ -1,3 +1,6 @@
+.text-end.m-3
+  = form_with url: destroy_user_session_path, method: :delete, class: "d-inline" do
+    = button_to "ログアウト", nil, data: { turbo_confirm: "ログアウトしますか？" }, class: "btn btn-danger"
 .container
   h1.text-center.my-4 ユーザー管理画面
   .text-end.mb-3

@@ -2,7 +2,7 @@ doctype html
 html
   head
     title
-      = content_for(:title) || "I To U Web"
+      = content_for(:title) || "Tasket"
     meta name="viewport" content="width=device-width,initial-scale=1"
     meta name="apple-mobile-web-app-capable" content="yes"
     meta name="mobile-web-app-capable" content="yes"
@@ -22,6 +22,8 @@ html
     / Includes all stylesheet files in app/assets/stylesheets
     = stylesheet_link_tag :app, "data-turbo-track": "reload"
     = javascript_importmap_tags
+
+    link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
 
   body
     = yield

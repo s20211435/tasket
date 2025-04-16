@@ -1,0 +1,4 @@
+- if defined?(message) && message.present?
+  .alert.alert-dismissible.fade.show data-controller="flash" class="alert-#{flash_type}" role="alert"
+    = message
+    button.btn-close type="button" data-bs-dismiss="alert" aria-label="Close"

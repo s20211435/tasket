@@ -1,0 +1,29 @@
+= render 'layouts/header'
+
+h1.text-center.mb-5 商品一覧
+
+= search_form_for @q do |f|
+  .row.mb-5.d-flex.justify-content-end
+    .col-md-3
+      = f.search_field :name_cont, class: "form-control", placeholder: "名前"
+    .col-md-3
+      = f.submit "検索", class: "btn btn-primary"
+      = link_to "リセット", products_path, class: "btn btn-outline-secondary ms-2"
+
+.container data-controller="product-frame"
+  #flash_messages
+
+  .d-flex.justify-content-end
+    = link_to '商品作成', new_product_path, class: 'btn btn-primary mb-3', data: { action: "click->product-frame#showNewForm" }
+  .row
+    .col-md-2 名前
+    .col-md-2 説明
+    .col-md-2 価格
+    .col-md-2 在庫
+
+  #products data-product-frame-target="productsList"
+    - @products.each do |product|
+      = render partial: "products/product", locals: { product: product }
+
+  #product_form_container
+    #product_form

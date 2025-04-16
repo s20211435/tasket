@@ -1,0 +1,22 @@
+= form_with model: product, local: false do |f|
+  .mb-3
+    = f.label :name, "名前"
+    = f.text_field :name, class: "form-control"
+  .mb-3
+    = f.label :description, "説明"
+    = f.text_area :description, class: "form-control"
+  .mb-3
+    = f.label :price, "価格"
+    = f.number_field :price, class: "form-control"
+  .mb-3
+    = f.label :stock_quantity, "在庫"
+    = f.number_field :stock_quantity, class: "form-control"
+
+  / ...フォームの内容...
+
+  / キャンセルボタン部分
+  = f.submit '保存', class: 'btn btn-primary me-2'
+  = link_to 'キャンセル', '#', class: 'btn btn-secondary', data: { action: "product-frame#cancelForm" }
+
+  / または、通常のボタンタグを使用している場合
+  / button type="button" class="btn btn-secondary" data-action="product-frame#cancelForm" キャンセル

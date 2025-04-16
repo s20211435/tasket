@@ -1,0 +1,16 @@
+= turbo_frame_tag "product_details_#{@product.id}" do
+  .card
+    .card-header
+      h5.card-title = @product.name
+    .card-body
+      .row
+        .col-md-6
+          p.fw-bold 説明
+          p = @product.description
+        .col-md-6
+          p.fw-bold 価格
+          p = "#{number_to_currency(@product.price, unit: '', precision: 0)}円"
+          p.fw-bold 在庫数
+          p = @product.stock_quantity
+    .card-footer
+      = link_to "戻る", products_path, class: "btn btn-secondary"
