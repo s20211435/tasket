@@ -1,0 +1,16 @@
+= form_with model: category, data: { turbo: true } do |f|
+  - if category.errors.any?
+    #error_explanation.alert.alert-danger
+      h5 = "#{category.errors.count}件のエラーがあります："
+      ul
+        - category.errors.full_messages.each do |message|
+          li = message
+
+  .mb-3
+    = f.label :name, "カテゴリ名", class: 'form-label'
+    = f.text_field :name, class: 'form-control'
+
+  .mb-3
+    = f.submit "保存", class: 'btn btn-primary'
+    - if category.persisted?
+      = link_to "キャンセル", categories_path, class: 'btn btn-outline-secondary ms-2'

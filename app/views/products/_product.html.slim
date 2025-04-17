@@ -1,9 +1,9 @@
 div id="product_#{product.id}" class="product-item"
   .row.mb-2
     .col-md-2.p-2 = product.name
-    .col-md-2.p-2 = product.description
     .col-md-2.p-2 = "#{number_to_currency(product.price, unit: '', precision: 0)}円"
     .col-md-2.p-2 = product.stock_quantity
+    .col-md-2.p-2 = product.category.name if product.category
     .col-md-4
       = link_to product_path(product), class: 'btn btn-primary btn-sm m-2 p-2', data: { turbo_frame: "product_details_#{product.id}" } do
         i.fa-solid.fa-server.p-2

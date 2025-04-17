@@ -1,0 +1,15 @@
+= render 'layouts/header'
+
+h1.text-center.mb-5 カテゴリ編集
+
+.container data-controller="category-frame"
+  #flash_messages
+
+  .row.justify-content-center
+    .col-md-6
+      .card
+        .card-header
+          h5 カテゴリの編集
+        .card-body
+          = turbo_frame_tag "category_form" do
+            = render 'form', category: @category

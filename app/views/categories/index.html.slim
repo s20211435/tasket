@@ -1,0 +1,24 @@
+= render 'layouts/header'
+
+h1.text-center.mb-5 カテゴリ管理
+
+.container data-controller="category-frame"
+  #flash_messages
+
+  .row
+    .col-md-6
+      .card
+        .card-header
+          h5 カテゴリ一覧
+        .card-body
+          #categories
+            - @categories.each do |category|
+              = render partial: "category", locals: { category: category }
+
+    .col-md-6
+      .card
+        .card-header
+          h5 カテゴリ作成/編集
+        .card-body
+          = turbo_frame_tag "category_form" do
+            = render "form", category: @category

@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :new, :create, :edit, :update, :destroy] # ユーザ管理画面（スーパーユーザー用）
 
   # 商品管理画面のルートを追加
+  resources :categories
   resources :products
+
   # アプリケーションのルート設定
   get "up" => "rails/health#show", as: :rails_health_check
 end

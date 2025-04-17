@@ -17,9 +17,9 @@ h1.text-center.mb-5 商品一覧
     = link_to '商品作成', new_product_path, class: 'btn btn-primary mb-3', data: { action: "click->product-frame#showNewForm" }
   .row
     .col-md-2 名前
-    .col-md-2 説明
     .col-md-2 価格
     .col-md-2 在庫
+    .col-md-2 カテゴリ
 
   #products data-product-frame-target="productsList"
     - @products.each do |product|
