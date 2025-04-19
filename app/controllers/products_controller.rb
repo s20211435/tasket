@@ -113,6 +113,10 @@ class ProductsController < ApplicationController
     end
   end
 
+  def calculate
+    @products = Product.all
+  end
+
   private
 
   def set_product

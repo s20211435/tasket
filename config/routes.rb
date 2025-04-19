@@ -11,7 +11,11 @@ Rails.application.routes.draw do
 
   # 商品管理画面のルートを追加
   resources :categories
-  resources :products
+  resources :products do
+    collection do
+      get :calculate
+    end
+  end
 
   # アプリケーションのルート設定
   get "up" => "rails/health#show", as: :rails_health_check
