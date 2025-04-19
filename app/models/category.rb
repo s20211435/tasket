@@ -1,8 +1,6 @@
 class Category < ApplicationRecord
-  # 1つのカテゴリは複数の商品を持つ
-  has_many :products, dependent: :nullify
-
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true
+  has_many :products
 
   def self.ransackable_attributes(auth_object = nil)
     %w[id name created_at updated_at]
