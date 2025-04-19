@@ -33,3 +33,10 @@ ja:
               not_an_integer: は整数で入力してください
             description:
               blank: 説明を入力してください
+        category:
+          attributes:
+            name:
+              blank: "を入力してください"
+  errors:
+    messages:
+      blank: "を入力してください"
