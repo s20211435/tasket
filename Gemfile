@@ -38,6 +38,12 @@ gem "solid_cable"
 
 gem "ransack"
 gem "kaminari"
+gem "bootstrap5-kaminari-views"
+
+gem "csv"
+gem "caxlsx"
+gem "caxlsx_rails"
+gem "roo"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false

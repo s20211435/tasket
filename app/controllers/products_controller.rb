@@ -1,13 +1,19 @@
 class ProductsController < ApplicationController
+  require 'csv'
   before_action :set_product, only: %i[show edit update destroy]
 
   def index
     @q = Product.ransack(params[:q])
-    @products = @q.result.page(params[:page]).per(10)  # 1ページに10件表示
+    @products = @q.result.includes(:category).page(params[:page]).per(10)  # 1ページに10件表示
     @product = Product.new # フォーム用に空の@productを追加
 
     respond_to do |format|
+      format.turbo_stream
       format.html
+      format.xlsx do
+        response.headers["Content-Disposition"] = 'attachment; filename="products.xlsx"'
+      end
+      format.csv { send_data generate_csv(@products), filename: "商品一覧_#{Time.zone.now.strftime('%Y%m%d')}.csv" }
       format.json {
         # 最後に更新された商品の更新日時を返す
         latest_update = @products.maximum(:updated_at)&.iso8601 || Time.current.iso8601
@@ -57,18 +63,13 @@ class ProductsController < ApplicationController
   end
 
   def edit
-    @product = Product.find_by(id: params[:id])
+    @product = Product.find(params[:id])
 
-    if @product.nil?
-      flash[:error] = "商品が見つかりませんでした"
-      redirect_to products_path
-    else
-      respond_to do |format|
-        format.turbo_stream {
-          render turbo_stream: turbo_stream.replace("product_form", partial: "products/form", locals: { product: @product })
-        }
-        format.html
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace("product_details_#{@product.id}", partial: "form", locals: { product: @product })
       end
+      format.html # HTMLフォーマットも必要な場合
     end
   end
 
@@ -78,7 +79,6 @@ class ProductsController < ApplicationController
         format.turbo_stream {
           render turbo_stream: [
             turbo_stream.replace("product_#{@product.id}", partial: "products/product", locals: { product: @product }),
-            turbo_stream.replace("product_form", partial: "products/form_hidden"),
             turbo_stream.prepend("flash_messages", partial: "shared/flash", locals: { flash_type: "success", message: "商品が更新されました。" })
           ]
         }
@@ -117,6 +117,52 @@ class ProductsController < ApplicationController
     @products = Product.all
   end
 
+  def export_empty_csv
+    csv_data = CSV.generate(headers: true) do |csv|
+      # ヘッダー行を追加
+      csv << ["商品名", "価格", "在庫数", "カテゴリ"]
+    end
+
+    send_data csv_data, filename: "空のテンプレート.csv", type: "text/csv"
+  end
+
+  def import_csv
+    if request.get?
+      # CSV取り込み画面を表示
+      render :import
+    elsif request.post?
+      # CSV取り込み処理
+      file = params[:file]
+      if file.nil?
+        redirect_to import_csv_products_path, alert: "ファイルを選択してください。"
+        return
+      end
+
+      errors = []
+      CSV.foreach(file.path, headers: true).with_index(1) do |row, line_number|
+        product = Product.new(
+          name: row["商品名"],
+          price: row["価格"].to_f,
+          stock_quantity: row["在庫数"].to_i,
+          description: row["説明文"].presence || "説明がありません",
+          category: Category.find_or_create_by(name: row["カテゴリ"])
+        )
+
+        unless product.save
+          errors << "行 #{line_number}: #{product.errors.full_messages.join(', ')}"
+        end
+      end
+
+      if errors.any?
+        flash[:alert] = "以下のエラーが発生しました:\n#{errors.join("\n")}"
+      else
+        flash[:notice] = "CSVを正常に取り込みました。"
+      end
+
+      redirect_to products_path
+    end
+  end
+
   private
 
   def set_product
@@ -125,5 +171,23 @@ class ProductsController < ApplicationController
 
   def product_params
     params.require(:product).permit(:name, :description, :price, :stock_quantity, :category_id)
+  end
+
+  def generate_csv(products)
+    CSV.generate(headers: true) do |csv|
+      # ヘッダー行を追加
+      csv << ["商品ID", "商品名", "価格", "在庫数", "カテゴリ"]
+
+      # 商品データを追加
+      products.each do |product|
+        csv << [
+          product.id,
+          product.name,
+          product.price,
+          product.stock_quantity,
+          product.category&.name || "未分類" # カテゴリがない場合は "未分類" を表示
+        ]
+      end
+    end
   end
 end
