@@ -1,2 +1,2 @@
-= turbo_frame_tag "product_form" do
+= turbo_frame_tag "product_details_#{@product.id}" do
   = render partial: "form", locals: { product: @product }

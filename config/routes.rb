@@ -14,6 +14,11 @@ Rails.application.routes.draw do
   resources :products do
     collection do
       get :calculate
+      get :index, defaults: { format: :html }
+      get :export_empty_csv
+      get :export_csv
+      get :import_csv # CSV取り込み画面用のルート
+      post :import_csv # CSV取り込み処理用のルート
     end
   end
 

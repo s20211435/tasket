@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["productsList"]
   static values = {
-    checkInterval: { type: Number, default: 5000 }, // ポーリング間隔（ミリ秒）
+    checkInterval: { type: Number, default: 10000 }, // ポーリング間隔（ミリ秒）
     lastUpdate: String
   }
 

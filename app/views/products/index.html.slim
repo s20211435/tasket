@@ -9,6 +9,10 @@ h1.text-center.mb-5 商品一覧
     .col-md-3
       = f.submit "検索", class: "btn btn-primary"
       = link_to "リセット", products_path, class: "btn btn-outline-secondary ms-2"
+    .col-md-2
+      = link_to "CSV出力", products_path(format: :csv), class: "btn btn-outline-secondary"
+    .col-md-2
+      = link_to "CSV取り込み", import_csv_products_path, class: "btn btn-outline-secondary"
 
 .container data-controller="product-frame"
   #flash_messages
@@ -27,3 +31,5 @@ h1.text-center.mb-5 商品一覧
 
   #product_form_container
     #product_form
+
+  = paginate @products, theme: "bootstrap-5"

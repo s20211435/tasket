@@ -1,0 +1,16 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "商品一覧") do |sheet|
+  # ヘッダー行を追加
+  sheet.add_row ["商品ID", "商品名", "価格", "在庫数", "カテゴリ"]
+
+  # 商品データを追加
+  @products.each do |product|
+    sheet.add_row [
+      product.id,
+      product.name,
+      product.price,
+      product.stock_quantity,
+      product.category&.name || "未分類" # カテゴリがない場合は "未分類" を表示
+    ]
+  end
+end
