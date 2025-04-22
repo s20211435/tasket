@@ -1,6 +1,26 @@
-= render "layouts/header"
-
 .container.mt-5
-  h1.text-center ホーム画面
+  h1.text-center.mb-5 ホーム画面
+
+  .row.row-cols-1.row-cols-md-3.g-4
+    .col
+      .card.h-100
+        .card-body.text-center
+          i.fa-solid.fa-cart-shopping.fa-3x.mb-3
+          h5.card-title 商品管理
+          = link_to '商品管理へ', products_path, class: 'btn btn-primary'
+
+    .col
+      .card.h-100
+        .card-body.text-center
+          i.fa-solid.fa-list.fa-3x.mb-3
+          h5.card-title カテゴリ管理
+          = link_to 'カテゴリ管理へ', categories_path, class: 'btn btn-primary'
+
+    .col
+      .card.h-100
+        .card-body.text-center
+          i.fa-solid.fa-calculator.fa-3x.mb-3
+          h5.card-title 商品金額計算
+          = link_to '金額計算へ', calculate_products_path, class: 'btn btn-primary'
 
 

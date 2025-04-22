@@ -1,2 +1,50 @@
 @use 'bootstrap/scss/bootstrap';
 @use 'bootstrap-icons/font/bootstrap-icons';
+
+/* ナビゲーションバーのスタイル */
+.header-wrapper {
+  width: 200px; /* ナビゲーションバーの幅 */
+  background-color: #f8f9fa; /* 背景色 */
+  border-right: 1px solid #ddd; /* 右側の境界線 */
+  box-sizing: border-box; /* ボーダーを含めた幅を計算 */
+  border: 1px solid #ddd; /* 全体を囲むボーダー */
+  border-radius: 5px; /* 角を丸くする */
+  margin: 1rem; /* 外側の余白 */
+}
+
+/* メインコンテンツのスタイル */
+.main-wrapper {
+  flex: 1; /* 残りのスペースを占める */
+  padding: 1rem; /* 内側の余白 */
+  background-color: #ffffff; /* 背景色 */
+  border: 1px solid #ddd; /* 全体を囲むボーダー */
+  border-radius: 5px; /* 角を丸くする */
+  margin: 1rem; /* 外側の余白 */
+  box-sizing: border-box; /* ボーダーを含めた幅を計算 */
+}
+
+.animate-fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in-right {
+  opacity: 0;
+  transform: translateX(100%);
+  animation: slideInRight 0.5s ease-out forwards;
+}
+
+@keyframes slideInRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

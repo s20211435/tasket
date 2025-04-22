@@ -1,16 +1,17 @@
 = turbo_frame_tag "product_details_#{@product.id}" do
-  .card
+  .card.shadow-sm.m-4.animate-fade-in
     .card-header
-      h5.card-title = @product.name
+      h4.card-title.mb-0 = @product.name
     .card-body
-      .row
+      .row.g-3
         .col-md-6
-          p.fw-bold 説明
-          p = @product.description
+          p.fs-4.fw-bold.mb-1 説明
+          p.text-muted = @product.description.presence || "説明がありません。"
         .col-md-6
-          p.fw-bold 価格
-          p = "#{number_to_currency(@product.price, unit: '', precision: 0)}円"
-          p.fw-bold 在庫数
-          p = @product.stock_quantity
-    .card-footer
-      = link_to "戻る", products_path, class: "btn btn-secondary"
+          p.fs-4.fw-bold.mb-1 価格
+          p.text-muted = "#{number_to_currency(@product.price, unit: '', precision: 0)}円"
+          p.fs-4.fw-bold.mb-1 在庫数
+          p.text-muted = @product.stock_quantity
+    .card-footer.d-flex.justify-content-end
+      = link_to "編集", edit_product_path(@product), class: "btn btn-outline-primary btn-sm"
+      = link_to "戻る", products_path, class: "btn btn-secondary btn-sm mx-2"
