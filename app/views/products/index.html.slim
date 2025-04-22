@@ -1,5 +1,3 @@
-= render 'layouts/header'
-
 h1.text-center.mb-5 商品一覧
 
 = search_form_for @q do |f|
@@ -9,27 +7,17 @@ h1.text-center.mb-5 商品一覧
     .col-md-3
       = f.submit "検索", class: "btn btn-primary"
       = link_to "リセット", products_path, class: "btn btn-outline-secondary ms-2"
-    .col-md-2
+    .col-md-1
       = link_to "CSV出力", products_path(format: :csv), class: "btn btn-outline-secondary"
-    .col-md-2
-      = link_to "CSV取り込み", import_csv_products_path, class: "btn btn-outline-secondary"
+    .col-md-1
+      = link_to '商品作成', new_product_path, class: 'btn btn-primary mb-3', data: { turbo_frame: "product_form" }
 
 .container data-controller="product-frame"
   #flash_messages
-
-  .d-flex.justify-content-end
-    = link_to '商品作成', new_product_path, class: 'btn btn-primary mb-3', data: { action: "click->product-frame#showNewForm" }
-  .row
-    .col-md-2 名前
-    .col-md-2 価格
-    .col-md-2 在庫
-    .col-md-2 カテゴリ
+  = turbo_frame_tag "product_form"
 
   #products data-product-frame-target="productsList"
     - @products.each do |product|
       = render partial: "products/product", locals: { product: product }
-
-  #product_form_container
-    #product_form
 
   = paginate @products, theme: "bootstrap-5"

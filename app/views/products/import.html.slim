@@ -1,14 +1,19 @@
 h1.text-center.mb-5 CSV取り込み
 
-.container
-  .col-md-2
-    = link_to "空のCSV出力", export_empty_csv_products_path, class: "btn btn-outline-secondary"
+.container.mt-5
+  .row.mb-4
+    .col-md-4.offset-md-4
+      = link_to "空のCSV出力", export_empty_csv_products_path, class: "btn btn-outline-secondary w-100"
 
-  = form_with url: import_csv_products_path, local: true, multipart: true do |f|
-    .col-md-6.mb-3
-      = f.label :file, "CSVファイルを選択"
-      = f.file_field :file, class: "form-control"
-    .col-md-2
-      = f.submit "取り込む", class: "btn btn-primary"
-
-  = link_to "商品一覧に戻る", products_path, class: "btn btn-outline-secondary mt-3"
+  .row.justify-content-center.mt-4
+    .col-md-6
+      .card.shadow-sm
+        .card-body
+          h5.text-center.mb-4.text-primary CSVファイルをアップロード
+          = form_with url: import_csv_products_path, local: true, multipart: true do |f|
+            .mb-4
+              = f.label :file, "CSVファイルを選択", class: "form-label fw-bold"
+              = f.file_field :file, class: "form-control"
+            .d-flex.justify-content-center.mt-4
+              = f.submit "取り込む", class: "btn btn-primary me-3 px-4"
+              = link_to "キャンセル", products_path, class: "btn btn-outline-secondary px-4"

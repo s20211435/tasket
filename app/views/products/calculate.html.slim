@@ -1,31 +1,37 @@
-= render 'layouts/header'
-
 h1.text-center.mb-5 商品金額計算
 
-.container data-controller="price-calculator"
-  .row.mb-3.d-flex.justify-content-end
+.container.mt-5(data-controller="price-calculator")
+  .row.mb-4.d-flex.justify-content-end
     .col-md-3
-      button.btn.btn-outline-primary type="button" data-action="click->price-calculator#addForm" フォームを追加
+      button.btn.btn-outline-primary.w-100(type="button" data-action="click->price-calculator#addForm") フォームを追加
     .col-md-2
-      button.btn.btn-outline-secondary type="button" data-action="click->price-calculator#resetForms" リセット
+      button.btn.btn-outline-secondary.w-100(type="button" data-action="click->price-calculator#resetForms") リセット
 
-  #forms-container
-    .form-group.row.mb-3 data-price-calculator-target="formTemplate"
-      .col-md-4
-        label.form-label 商品を選択
-        select.form-select data-price-calculator-target="productSelect"
-          option value="" 選択してください
-          - @products.each do |product|
-            option value=product.price data-stock=product.stock_quantity = "#{product.name} (在庫: #{product.stock_quantity})"
-      .col-md-3
-        label.form-label 数量を入力
-        input.form-control type="number" min="1" value="1" data-price-calculator-target="quantityInput"
-      .col-md-3
-        label.form-label 小計
-        span.d-block.mt-2 data-price-calculator-target="itemTotal" 0
-      .col-md-2
-        button.btn.btn-danger.mt-4 type="button" data-action="click->price-calculator#removeForm" 削除
+  #forms-container(data-price-calculator-target="formsContainer")
+    .form-group.border.rounded.p-3.mb-3.shadow-sm.d-none(data-price-calculator-target="formTemplate")
+      .row.g-3.align-items-end
+        .col-md-4
+          label.form-label.fw-bold 商品を選択
+          select.form-select(data-price-calculator-target="productSelect" data-action="change->price-calculator#updateLabels")
+            option value="" 選択してください
+            - @products.each do |product|
+              option value=product.price data-stock=product.stock_quantity data-category=product.category = "#{product.name}"
+        .col-md-3
+          label.form-label.fw-bold 数量を入力
+          input.form-control(type="number" min="1" value="1" data-price-calculator-target="quantityInput")
+        .col-md-3
+          label.form-label.fw-bold 小計
+          span.d-block.mt-2.text-muted.fs-5(data-price-calculator-target="itemTotal") 0
+        .col-md-2.text-end
+          button.btn.btn-danger.w-100(type="button" data-action="click->price-calculator#removeForm") 削除
+      .row
+        .col-md-1.mt-2
+          span.text-muted(data-price-calculator-target="stockLabel") 在庫: -
+        .col-md-2.mt-2
+          span.text-muted(data-price-calculator-target="categoryLabel") カテゴリ: -
 
-  .row.mt-3
-    .col-md-12
-      h4 合計金額: <span data-price-calculator-target="totalPrice">0</span> 円
+  .row.mt-4
+    .col-md-12.text-center
+      h4.fw-bold 合計金額:
+      span(data-price-calculator-target="totalPrice" class="text-success font-bold fs-1 ms-2") 0
+      | 円

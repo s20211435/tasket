@@ -1,4 +1,5 @@
 class Product < ApplicationRecord
+  include Discard::Model
   # category_idカラムを使用して、Categoryモデルと関連付け
   belongs_to :category, optional: true  # optional: true で関連を任意に設定
 

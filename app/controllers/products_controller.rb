@@ -4,8 +4,8 @@ class ProductsController < ApplicationController
 
   def index
     @q = Product.ransack(params[:q])
-    @products = @q.result.includes(:category).page(params[:page]).per(10)  # 1ページに10件表示
-    @product = Product.new # フォーム用に空の@productを追加
+    @products = @q.result.includes(:category).page(params[:page]).per(10).where(discarded_at: nil)
+    @product = Product.new
 
     respond_to do |format|
       format.turbo_stream
@@ -28,8 +28,8 @@ class ProductsController < ApplicationController
   def new
     @product = Product.new
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.replace("product_form", partial: "products/form", locals: { product: @product }) }
-      format.html
+      format.turbo_stream { render partial: "products/form", locals: { product: @product } }
+      format.html { render :new }
     end
   end
 
@@ -41,23 +41,18 @@ class ProductsController < ApplicationController
         format.turbo_stream {
           render turbo_stream: [
             turbo_stream.append("products", partial: "products/product", locals: { product: @product }),
-            turbo_stream.replace("product_form", partial: "products/form_hidden"),
+            turbo_stream.replace("product_form", partial: "products/form", locals: { product: Product.new }),
             turbo_stream.prepend("flash_messages", partial: "shared/flash", locals: { flash_type: "success", message: "商品が作成されました。" })
           ]
         }
-        format.html { redirect_to @product, notice: '商品が作成されました。' }
-        format.json { render json: { success: true, product: @product, message: '商品が作成されました。' } }
+        format.html { redirect_to products_path, notice: "商品が作成されました。" }
       end
     else
       respond_to do |format|
         format.turbo_stream {
-          render turbo_stream: [
-            turbo_stream.replace("product_form", partial: "products/form", locals: { product: @product }),
-            turbo_stream.prepend("flash_messages", partial: "shared/flash", locals: { flash_type: "danger", message: "登録できませんでした。入力内容を確認してください。" })
-          ]
+          render turbo_stream: turbo_stream.replace("product_form", partial: "products/form", locals: { product: @product })
         }
         format.html { render :new }
-        format.json { render json: { success: false, errors: @product.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -100,16 +95,18 @@ class ProductsController < ApplicationController
   end
 
   def destroy
-    @product.destroy
+    @product = Product.find(params[:id])
+    @product.discard # 論理削除
+
     respond_to do |format|
-      format.turbo_stream {
+      format.turbo_stream do
         render turbo_stream: [
           turbo_stream.remove("product_#{@product.id}"),
           turbo_stream.prepend("flash_messages", partial: "shared/flash", locals: { flash_type: "success", message: "商品が削除されました。" })
         ]
-      }
+      end
       format.html { redirect_to products_url, notice: '商品が削除されました。' }
-      format.json { render json: { success: true, message: '商品が削除されました。' } }
+      format.json { head :no_content }
     end
   end
 
