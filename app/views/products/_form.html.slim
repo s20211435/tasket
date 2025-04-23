@@ -2,23 +2,23 @@
   h2.text-center.mb-4 = product.new_record? ? "新しい商品を作成" : "商品を編集"
 
   .row.g-3
-    .col-md-6
+    .col-12.col-md-6
       = f.label :name, "商品名", class: "form-label fw-bold"
       = f.text_field :name, class: "form-control", placeholder: "商品名を入力"
 
-    .col-md-6
+    .col-12.col-md-6
       = f.label :price, "価格", class: "form-label fw-bold"
       = f.number_field :price, min: 0, class: "form-control", placeholder: "価格を入力"
 
-    .col-md-12
+    .col-12
       = f.label :description, "説明", class: "form-label fw-bold"
       = f.text_area :description, class: "form-control", rows: 3, placeholder: "商品の説明を入力"
 
-    .col-md-6
+    .col-12.col-md-6
       = f.label :stock_quantity, "在庫数", class: "form-label fw-bold"
       = f.number_field :stock_quantity, min: 0, class: "form-control", placeholder: "在庫数を入力"
 
-    .col-md-6
+    .col-12.col-md-6
       = f.label :category_id, "カテゴリ", class: "form-label fw-bold"
       = f.collection_select :category_id, Category.all, :id, :name, { prompt: "カテゴリを選択してください" }, class: "form-select"
 

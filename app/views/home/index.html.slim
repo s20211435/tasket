@@ -1,4 +1,6 @@
-.container.mt-5
+.d-flex.justify-content-end.mb-3
+    = link_to 'ログアウト', destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: 'btn btn-danger'
+.container.mt-2
   h1.text-center.mb-5 ホーム画面
 
   .row.row-cols-1.row-cols-md-3.g-4
@@ -22,5 +24,12 @@
           i.fa-solid.fa-calculator.fa-3x.mb-3
           h5.card-title 商品金額計算
           = link_to '金額計算へ', calculate_products_path, class: 'btn btn-primary'
+
+    .col
+      .card.h-100
+        .card-body.text-center
+          i.fa-solid.fa-file-import.fa-3x.mb-3
+          h5.card-title 商品CSV取り込み
+          = link_to 'CSV取り込みへ', import_csv_products_path, class: 'btn btn-primary'
 
 

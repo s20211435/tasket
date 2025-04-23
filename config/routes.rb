@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       get :export_csv
       get :import_csv # CSV取り込み画面用のルート
       post :import_csv # CSV取り込み処理用のルート
+      get :search
     end
   end
 

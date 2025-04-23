@@ -12,10 +12,10 @@ h1.text-center.mb-5 商品金額計算
       .row.g-3.align-items-end
         .col-md-4
           label.form-label.fw-bold 商品を選択
-          select.form-select(data-price-calculator-target="productSelect" data-action="change->price-calculator#updateLabels")
+          select.form-select(data-price-calculator-target="productSelect")
             option value="" 選択してください
             - @products.each do |product|
-              option value=product.price data-stock=product.stock_quantity data-category=product.category = "#{product.name}"
+              option value=product.price data-stock=product.stock_quantity data-category=product.category.name = "#{product.name}"
         .col-md-3
           label.form-label.fw-bold 数量を入力
           input.form-control(type="number" min="1" value="1" data-price-calculator-target="quantityInput")
@@ -24,11 +24,13 @@ h1.text-center.mb-5 商品金額計算
           span.d-block.mt-2.text-muted.fs-5(data-price-calculator-target="itemTotal") 0
         .col-md-2.text-end
           button.btn.btn-danger.w-100(type="button" data-action="click->price-calculator#removeForm") 削除
-      .row
-        .col-md-1.mt-2
-          span.text-muted(data-price-calculator-target="stockLabel") 在庫: -
-        .col-md-2.mt-2
-          span.text-muted(data-price-calculator-target="categoryLabel") カテゴリ: -
+      .row.mt-2
+        .col-md-6
+          span.text-muted 在庫:
+          span(data-stock-info) -
+        .col-md-6
+          span.text-muted カテゴリ:
+          span(data-category-info) -
 
   .row.mt-4
     .col-md-12.text-center

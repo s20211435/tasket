@@ -1,28 +1,33 @@
-<div class="form-card mx-auto pt-5" style="max-width: 400px;">
-  <div class="form-card-body">
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "form-container" }) do |f| %>
-      <div class="mb-3">
-        <%= f.label :email, t('devise.sessions.email'), class: "form-label" %>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", id: "exampleInputEmail1" %>
-        <div id="emailHelp" class="form-text"><%= t('devise.sessions.email_help') %></div>
-      </div>
-
-      <div class="mb-3">
-        <%= f.label :password, t('devise.sessions.password'), class: "form-label" %>
-        <%= f.password_field :password, autocomplete: "current-password", class: "form-control", id: "exampleInputPassword1" %>
-      </div>
-
-      <% if devise_mapping.rememberable? %>
-        <div class="mb-3 form-check">
-          <%= f.check_box :remember_me, class: "form-check-input", id: "exampleCheck1" %>
-          <%= f.label :remember_me, t('devise.sessions.remember_me'), class: "form-check-label", for: "exampleCheck1" %>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="form-card shadow-lg rounded p-4" style="max-width: 400px; width: 100%; background-color: #f8f9fa;">
+    <div class="form-card-header text-center py-3">
+      <h2 class="fw-bold"><%= t('devise.sessions.title') %></h2>
+    </div>
+    <div class="form-card-body">
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "form-container" }) do |f| %>
+        <div class="mb-4">
+          <%= f.label :email, t('devise.sessions.email'), class: "form-label fw-bold" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control form-control-lg", id: "exampleInputEmail1" %>
+          <div id="emailHelp" class="form-text text-muted"><%= t('devise.sessions.email_help') %></div>
         </div>
-      <% end %>
 
-      <button type="submit" class="btn btn-primary w-100"><%= t('devise.sessions.submit') %></button>
-    <% end %>
-  </div>
-  <div class="form-card-footer text-center">
-    <%= render "devise/shared/links" %>
+        <div class="mb-4">
+          <%= f.label :password, t('devise.sessions.password'), class: "form-label fw-bold" %>
+          <%= f.password_field :password, autocomplete: "current-password", class: "form-control form-control-lg", id: "exampleInputPassword1" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="mb-4 form-check">
+            <%= f.check_box :remember_me, class: "form-check-input", id: "exampleCheck1" %>
+            <%= f.label :remember_me, t('devise.sessions.remember_me'), class: "form-check-label", for: "exampleCheck1" %>
+          </div>
+        <% end %>
+
+        <button type="submit" class="btn btn-primary btn-lg w-100"><%= t('devise.sessions.submit') %></button>
+      <% end %>
+    </div>
+    <div class="form-card-footer text-center py-3">
+      <p class="mb-0"><%= render "devise/shared/links" %></p>
+    </div>
   </div>
 </div>

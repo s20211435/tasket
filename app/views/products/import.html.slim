@@ -1,4 +1,6 @@
-h1.text-center.mb-5 CSV取り込み
+.d-flex.justify-content-end.mb-3
+    = link_to 'ログアウト', destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: 'btn btn-danger'
+h1.text-center.mb-5.mt-5 商品CSV取り込み
 
 .container.mt-5
   .row.mb-4
@@ -16,4 +18,3 @@ h1.text-center.mb-5 CSV取り込み
               = f.file_field :file, class: "form-control"
             .d-flex.justify-content-center.mt-4
               = f.submit "取り込む", class: "btn btn-primary me-3 px-4"
-              = link_to "キャンセル", products_path, class: "btn btn-outline-secondary px-4"

@@ -110,6 +110,16 @@ class ProductsController < ApplicationController
     end
   end
 
+  def search
+    @q = Product.ransack(params[:q])
+    @products = @q.result.includes(:category).limit(10)
+
+    respond_to do |format|
+      format.html { render partial: "products/search_results", locals: { products: @products } }
+      format.json { render json: @products }
+    end
+  end
+
   def calculate
     @products = Product.all
   end
@@ -125,29 +135,52 @@ class ProductsController < ApplicationController
 
   def import_csv
     if request.get?
-      # CSV取り込み画面を表示
       render :import
     elsif request.post?
-      # CSV取り込み処理
       file = params[:file]
-      if file.nil?
-        redirect_to import_csv_products_path, alert: "ファイルを選択してください。"
+      if file.nil? || file.size.zero?
+        flash[:alert] = "ファイルが選択されていないか、空のファイルです。"
+        redirect_to import_csv_products_path
         return
       end
 
       errors = []
-      CSV.foreach(file.path, headers: true).with_index(1) do |row, line_number|
-        product = Product.new(
-          name: row["商品名"],
-          price: row["価格"].to_f,
-          stock_quantity: row["在庫数"].to_i,
-          description: row["説明文"].presence || "説明がありません",
-          category: Category.find_or_create_by(name: row["カテゴリ"])
-        )
+      begin
+        CSV.foreach(file.path, headers: true).with_index(1) do |row, line_number|
+          if row["商品名"].blank?
+            errors << "行 #{line_number}: 商品名が空です。"
+            next
+          end
 
-        unless product.save
-          errors << "行 #{line_number}: #{product.errors.full_messages.join(', ')}"
+          if row["価格"].blank? || row["価格"].to_f < 0
+            errors << "行 #{line_number}: 価格が空、または0以上の値ではありません。"
+            next
+          end
+
+          if row["在庫数"].blank? || row["在庫数"].to_i < 0
+            errors << "行 #{line_number}: 在庫数が空、または0以上の値ではありません。"
+            next
+          end
+
+          if row["カテゴリ"].blank?
+            errors << "行 #{line_number}: カテゴリが空です。"
+            next
+          end
+
+          product = Product.new(
+            name: row["商品名"],
+            price: row["価格"].to_f,
+            stock_quantity: row["在庫数"].to_i,
+            description: row["説明文"].presence || "説明がありません",
+            category: Category.find_or_create_by(name: row["カテゴリ"])
+          )
+
+          unless product.save
+            errors << "行 #{line_number}: #{product.errors.full_messages.join(', ')}"
+          end
         end
+      rescue => e
+        errors << "CSVの読み込み中にエラーが発生しました: #{e.message}"
       end
 
       if errors.any?

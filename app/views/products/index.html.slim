@@ -1,18 +1,21 @@
-h1.text-center.mb-5 商品一覧
+.d-flex.justify-content-end.mb-3
+    = link_to 'ログアウト', destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: 'btn btn-danger'
+h1.text-center.mb-5.mt-5 商品一覧
 
 = search_form_for @q do |f|
-  .row.mb-5.d-flex.justify-content-end
-    .col-md-3
-      = f.search_field :name_cont, class: "form-control", placeholder: "名前"
-    .col-md-3
-      = f.submit "検索", class: "btn btn-primary"
-      = link_to "リセット", products_path, class: "btn btn-outline-secondary ms-2"
-    .col-md-1
-      = link_to "CSV出力", products_path(format: :csv), class: "btn btn-outline-secondary"
-    .col-md-1
-      = link_to '商品作成', new_product_path, class: 'btn btn-primary mb-3', data: { turbo_frame: "product_form" }
+  .row.mb-5.g-3
+    .col-12
+      .d-flex.justify-content-center.align-items-center.flex-wrap.gap-2
+        = f.search_field :name_cont, class: "form-control w-auto", placeholder: "名前"
+        = f.submit "検索", class: "btn btn-primary"
+        = link_to "リセット", products_path, class: "btn btn-outline-secondary"
+    .col-12
+      .d-flex.justify-content-center.align-items-center.flex-wrap.gap-2
+        = link_to "CSV出力", products_path(format: :csv), class: "btn btn-outline-secondary"
+        = link_to '商品作成', new_product_path, class: 'btn btn-primary', data: { turbo_frame: "product_form" }
 
 .container data-controller="product-frame"
+  = paginate @products, theme: "bootstrap-5"
   #flash_messages
   = turbo_frame_tag "product_form"
 

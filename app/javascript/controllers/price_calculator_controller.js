@@ -22,11 +22,6 @@ export default class extends Controller {
   }
 
   removeForm(event) {
-    event.target.closest(".form-group").remove()
-    this.updateTotalPrice()
-  }
-
-  removeForm(event) {
     const formGroup = event.target.closest(".form-group")
     const formsContainer = this.element.querySelector("#forms-container")
 
@@ -67,7 +62,23 @@ export default class extends Controller {
     const quantity = parseInt(input.value) || 0
     const total = price * quantity
 
+    // 合計金額を更新
     itemTotal.textContent = total.toLocaleString()
+
+    // 在庫やカテゴリ情報を取得
+    const selectedOption = select.options[select.selectedIndex]
+    const stock = selectedOption.getAttribute("data-stock") || "不明"
+    const category = selectedOption.getAttribute("data-category") || "不明"
+
+    // 在庫とカテゴリ情報をUIに反映
+    const stockInfo = formGroup.querySelector("[data-stock-info]")
+    const categoryInfo = formGroup.querySelector("[data-category-info]")
+
+    if (stockInfo) stockInfo.textContent = stock
+    if (categoryInfo) categoryInfo.textContent = category
+
+    console.log(`在庫: ${stock}, カテゴリ: ${category}`)
+
     this.updateTotalPrice()
   }
 

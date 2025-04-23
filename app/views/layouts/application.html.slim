@@ -21,8 +21,15 @@ html
 
   body
     .layout-wrapper.d-flex
-      - unless controller_name == "sessions" && action_name == "new"
+      - unless devise_controller?
         .header-wrapper
           = render 'layouts/header'
       .main-wrapper
+        / フラッシュメッセージの表示
+        - if flash[:alert]
+          .alert.alert-danger role="alert"
+            = flash[:alert]
+        - if flash[:notice]
+          .alert.alert-success role="alert"
+            = flash[:notice]
         = yield

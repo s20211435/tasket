@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_action :ensure_superuser   # スーパーユーザーのみアクセス可能
 
   def index
-    @users = User.all # ユーザー一覧を取得
+    @users = User.kept # 論理削除されていないユーザーのみ取得
   end
 
   def new
@@ -49,18 +49,27 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user = User.find(params[:id]) # 削除するユーザーを取得
-    if @user.destroy
-      redirect_to users_path, notice: "ユーザーが削除されました。" # 削除成功時のリダイレクト
-    else
-      redirect_to users_path, alert: "ユーザーの削除に失敗しました。" # 削除失敗時のリダイレクト
+    @user = User.find(params[:id])
+    @user.destroy # 物理削除を実行
+    respond_to do |format|
+      format.turbo_stream {
+        render turbo_stream: [
+          turbo_stream.remove("user_#{@user.id}")
+        ]
+      }
+      format.html { redirect_to users_path, notice: "ユーザーが削除されました。" }
     end
   end
 
   private
 
   def ensure_superuser
-    redirect_to root_path, alert: "アクセス権限がありません。" unless current_user.superuser?
+    unless current_user.superuser?
+      respond_to do |format|
+        format.html { redirect_to root_path, alert: "アクセス権限がありません。" }
+        format.json { render json: { error: "アクセス権限がありません。" }, status: :forbidden }
+      end
+    end
   end
 
   def user_params

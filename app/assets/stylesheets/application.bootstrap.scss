@@ -1,5 +1,7 @@
 @use 'bootstrap/scss/bootstrap';
 @use 'bootstrap-icons/font/bootstrap-icons';
+@import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap');
+
 
 /* ナビゲーションバーのスタイル */
 .header-wrapper {
@@ -21,6 +23,7 @@
   border-radius: 5px; /* 角を丸くする */
   margin: 1rem; /* 外側の余白 */
   box-sizing: border-box; /* ボーダーを含めた幅を計算 */
+  min-height: 100vh; /* 最小幅を100vhに設定 */
 }
 
 .animate-fade-in {
@@ -47,4 +50,46 @@
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+/* 幅が狭いときは縦方向に変更 */
+@media (max-width: 992px) {
+  .layout-wrapper {
+    flex-direction: column;
+  }
+
+  .header-wrapper {
+    width: 100%; /* 横幅を開放 */
+    margin: 0; /* 外側の余白をリセット */
+    border-right: none; /* 右側の境界線を削除 */
+    border-bottom: 1px solid #ddd; /* 下側に境界線を追加 */
+  }
+
+  .navbar-nav .nav-link {
+    font-size: 1.25rem; /* テキストを大きく */
+    padding: 1rem; /* 項目の余白を広げる */
+  }
+
+  .navbar-nav .nav-link i {
+    font-size: 2rem; /* アイコンを大きく */
+    margin-bottom: 0.5rem; /* アイコンとテキストの間隔を調整 */
+  }
+}
+
+/* 全体のフォントを統一 */
+body {
+  font-family: 'Kosugi Maru', sans-serif;
+  line-height: 1.6; /* 読みやすさのために行間を調整 */
+}
+
+/* 見出しのフォントを強調 */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Kosugi Maru', sans-serif;
+  font-weight: 600; /* 見出しは少し太字 */
+}
+
+/* ボタンのフォントを統一 */
+button {
+  font-family: 'Kosugi Maru', sans-serif;
+  font-size: 1rem; /* ボタンのフォントサイズを統一 */
 }

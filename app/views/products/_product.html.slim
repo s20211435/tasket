@@ -1,20 +1,20 @@
 div id="product_#{product.id}" class="product-item border rounded p-3 mb-3 shadow-sm"
-  .row.align-items-center
-    .col-md-3
-      h5.mb-0 = product.name
-      small.text-muted = product.category.name if product.category
-    .col-md-2.text-center
-      span.fw-bold = "#{number_to_currency(product.price, unit: '', precision: 0)}円"
-    .col-md-2.text-center
-      span.fw-bold = product.stock_quantity
-    .col-md-5.text-end
-      = link_to product_path(product), class: 'btn btn-outline-primary btn-sm me-2', data: { turbo_frame: "product_details_#{product.id}" } do
+  .row.align-items-center.g-3
+    .col-12.col-md-3.text-center.text-md-start
+      h5.mb-0.fs-4 = product.name
+      small.text-muted.fs-6 = product.category.name if product.category
+    .col-6.col-md-2.text-center
+      span.fw-bold.fs-5 = "#{number_to_currency(product.price, unit: '', precision: 0)}円"
+    .col-6.col-md-2.text-center
+      span.fw-bold.fs-5 = "#{product.stock_quantity}個"
+    .col-12.col-md-5.text-center.text-md-end
+      = link_to product_path(product), class: 'btn btn-outline-primary btn-lg me-2', data: { turbo_frame: "product_details_#{product.id}" } do
         i.fa-solid.fa-server.me-1
         | 詳細
-      = link_to edit_product_path(product), class: 'btn btn-outline-secondary btn-sm me-2', data: { turbo_frame: "product_details_#{product.id}" } do
+      = link_to edit_product_path(product), class: 'btn btn-outline-secondary btn-lg me-2', data: { turbo_frame: "product_details_#{product.id}" } do
         i.fas.fa-edit.me-1
         | 編集
-      = link_to product_path(product), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-outline-danger btn-sm' do
+      = link_to product_path(product), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-outline-danger btn-lg' do
         i.fas.fa-trash.me-1
         | 削除
 
