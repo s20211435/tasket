@@ -121,7 +121,8 @@ class ProductsController < ApplicationController
   end
 
   def calculate
-    @products = Product.all
+    @products = Product.includes(:category).all
+    @categories = Category.all # カテゴリ情報を取得
   end
 
   def export_empty_csv

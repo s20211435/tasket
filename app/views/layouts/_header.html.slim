@@ -3,8 +3,7 @@
   nav.navbar.navbar-expand-lg.navbar-light.bg-light.d-lg-none
     .container-fluid
       = link_to root_path, class: "navbar-brand d-flex align-items-center" do
-        img src=asset_path("tasket.jpg") alt="" class="img-fluid rounded-circle" style="width: 100px; height:90px;"
-        span.ms-2.fw-bold Tasket
+        img src=asset_path("tas.png") alt="" class="img-fluid" style="width: 200px; height:130px;"
       button.navbar-toggler type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
         span.navbar-toggler-icon
       .collapse.navbar-collapse#navbarNav
@@ -33,7 +32,7 @@
   / 幅が大きいときの現在のデザイン
   .d-none.d-lg-block
     .col-12.mb-2
-      img src=asset_path("tasket.jpg") alt="" class="img-fluid rounded-circle mx-2" style="width: 150px; height:140px;"
+      img src=asset_path("tas.png") alt="" class="img-fluid m-2 mt-4" style="width: 150px; height:100px;"
     .col-12.mb-3
       = link_to root_path, class: "link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-0-hover d-flex flex-column align-items-center #{'text-muted' unless current_page?(root_path)}" do
         i.fa-solid.fa-house.fa-4x.mb-2

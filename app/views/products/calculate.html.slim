@@ -3,19 +3,23 @@ h1.text-center.mb-5 商品金額計算
 .container.mt-5(data-controller="price-calculator")
   .row.mb-4.d-flex.justify-content-end
     .col-md-3
-      button.btn.btn-outline-primary.w-100(type="button" data-action="click->price-calculator#addForm") フォームを追加
+      button.btn.btn-outline-primary.w-100.mb-5(type="button" data-action="click->price-calculator#addForm") フォームを追加
     .col-md-2
       button.btn.btn-outline-secondary.w-100(type="button" data-action="click->price-calculator#resetForms") リセット
+
+  .row.mt-4
+    .col-md-12.text-center
+      h4.fw-bold 合計金額:
+      span(data-price-calculator-target="totalPrice" class="text-success font-bold fs-1 ms-2") 0
+      | 円
 
   #forms-container(data-price-calculator-target="formsContainer")
     .form-group.border.rounded.p-3.mb-3.shadow-sm.d-none(data-price-calculator-target="formTemplate")
       .row.g-3.align-items-end
         .col-md-4
           label.form-label.fw-bold 商品を選択
-          select.form-select(data-price-calculator-target="productSelect")
-            option value="" 選択してください
-            - @products.each do |product|
-              option value=product.price data-stock=product.stock_quantity data-category=product.category.name = "#{product.name}"
+          button.btn.btn-outline-primary.w-100(type="button" data-action="click->price-calculator#openProductModal") 商品を選択
+          input(type="hidden" data-price-calculator-target="productSelect")
         .col-md-3
           label.form-label.fw-bold 数量を入力
           input.form-control(type="number" min="1" value="1" data-price-calculator-target="quantityInput")
@@ -32,8 +36,34 @@ h1.text-center.mb-5 商品金額計算
           span.text-muted カテゴリ:
           span(data-category-info) -
 
-  .row.mt-4
-    .col-md-12.text-center
-      h4.fw-bold 合計金額:
-      span(data-price-calculator-target="totalPrice" class="text-success font-bold fs-1 ms-2") 0
-      | 円
+  / モーダル
+  .modal.fade#productModal(tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true")
+    .modal-dialog.modal-lg
+      .modal-content
+        .modal-header
+          h5.modal-title#productModalLabel 商品を選択
+          button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+        .modal-body
+          .row.mb-3
+            .col-md-8
+              input.form-control(type="text" placeholder="商品名で検索" data-action="input->price-calculator#filterProducts" data-price-calculator-target="searchInput")
+            .col-md-4
+              select.form-select(data-action="change->price-calculator#filterProducts" data-price-calculator-target="categoryFilter")
+                option(value="") 全てのカテゴリ
+                - @categories.each do |category|
+                  option(value=category.name) = category.name
+          table.table.table-hover
+            thead
+              tr
+                th 商品名
+                th 価格
+                th カテゴリ
+                th 選択
+            tbody(data-price-calculator-target="productList")
+              - @products.each do |product|
+                tr(data-category=product.category.name data-name=product.name)
+                  td = product.name
+                  td = "#{product.price.to_i}円"
+                  td = product.category.name
+                  td
+                    button.btn.btn-primary(type="button" data-action="click->price-calculator#selectProduct" data-product-name=product.name data-product-price=product.price data-product-stock=product.stock_quantity data-product-category=product.category.name) 選択

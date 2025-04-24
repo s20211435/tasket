@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["formTemplate", "productSelect", "quantityInput", "totalPrice", "itemTotal"]
+  static targets = ["formTemplate", "productSelect", "quantityInput", "totalPrice", "itemTotal", "searchInput", "categoryFilter", "productList"]
 
   connect() {
     this.addChangeListeners()
@@ -14,10 +14,10 @@ export default class extends Controller {
     this.element.querySelector("#forms-container").appendChild(template)
 
     // 新しいフォーム内の要素にイベントリスナーを追加
-    template.querySelectorAll("select, input").forEach((element) => {
-      element.addEventListener("change", () => this.updateItemTotal(element.closest(".form-group")))
-    })
+    const quantityInput = template.querySelector("[data-price-calculator-target='quantityInput']")
+    quantityInput.addEventListener("change", () => this.updateItemTotal(template))
 
+    // 合計金額を再計算
     this.updateTotalPrice()
   }
 
@@ -58,28 +58,27 @@ export default class extends Controller {
     const input = formGroup.querySelector("[data-price-calculator-target='quantityInput']")
     const itemTotal = formGroup.querySelector("[data-price-calculator-target='itemTotal']")
 
+    // 商品の価格を取得
     const price = parseFloat(select.value) || 0
-    const quantity = parseInt(input.value) || 0
+    const quantity = parseInt(input.value, 10) || 0
     const total = price * quantity
 
-    // 合計金額を更新
+    // 小計を更新
     itemTotal.textContent = total.toLocaleString()
+    // 合計金額を更新
+    this.updateTotalPrice()
 
     // 在庫やカテゴリ情報を取得
-    const selectedOption = select.options[select.selectedIndex]
-    const stock = selectedOption.getAttribute("data-stock") || "不明"
-    const category = selectedOption.getAttribute("data-category") || "不明"
-
-    // 在庫とカテゴリ情報をUIに反映
     const stockInfo = formGroup.querySelector("[data-stock-info]")
     const categoryInfo = formGroup.querySelector("[data-category-info]")
+
+    const selectedOption = select.options[select.selectedIndex]
+    const stock = selectedOption?.getAttribute("data-stock") || "不明"
+    const category = selectedOption?.getAttribute("data-category") || "不明"
 
     if (stockInfo) stockInfo.textContent = stock
     if (categoryInfo) categoryInfo.textContent = category
 
-    console.log(`在庫: ${stock}, カテゴリ: ${category}`)
-
-    this.updateTotalPrice()
   }
 
   updateTotalPrice() {
@@ -97,6 +96,61 @@ export default class extends Controller {
     })
     this.quantityInputTargets.forEach((input) => {
       input.addEventListener("change", (event) => this.updateItemTotal(event.target.closest(".form-group")))
+    })
+  }
+
+  openProductModal(event) {
+    this.currentFormGroup = event.target.closest(".form-group")
+    const modal = new bootstrap.Modal(document.getElementById("productModal"))
+    modal.show()
+  }
+
+  selectProduct(event) {
+    const button = event.target
+    const productPrice = button.getAttribute("data-product-price")
+    const productStock = button.getAttribute("data-product-stock")
+    const productCategory = button.getAttribute("data-product-category")
+
+    // 現在のフォームに選択した商品情報を反映
+    const productSelect = this.currentFormGroup.querySelector("[data-price-calculator-target='productSelect']")
+    const stockInfo = this.currentFormGroup.querySelector("[data-stock-info]")
+    const categoryInfo = this.currentFormGroup.querySelector("[data-category-info]")
+    const quantityInput = this.currentFormGroup.querySelector("[data-price-calculator-target='quantityInput']")
+
+    productSelect.value = productPrice
+    stockInfo.textContent = productStock
+    categoryInfo.textContent = productCategory
+
+    // モーダルを閉じる
+    const modal = bootstrap.Modal.getInstance(document.getElementById("productModal"))
+    modal.hide()
+
+    // 小計を更新
+    this.updateItemTotal(this.currentFormGroup)
+
+    // フォーム内の数量変更時に再計算するイベントリスナーを追加
+    quantityInput.addEventListener("change", () => this.updateItemTotal(this.currentFormGroup))
+
+    // 合計金額を再計算
+    this.updateTotalPrice()
+  }
+
+  filterProducts() {
+    const searchQuery = this.searchInputTarget.value.toLowerCase()
+    const selectedCategory = this.categoryFilterTarget.value
+
+    this.productListTarget.querySelectorAll("tr").forEach((row) => {
+      const productName = row.getAttribute("data-name").toLowerCase()
+      const productCategory = row.getAttribute("data-category")
+
+      const matchesSearch = productName.includes(searchQuery)
+      const matchesCategory = !selectedCategory || productCategory === selectedCategory
+
+      if (matchesSearch && matchesCategory) {
+        row.style.display = ""
+      } else {
+        row.style.display = "none"
+      }
     })
   }
 }
