@@ -45,6 +45,8 @@ gem "caxlsx"
 gem "caxlsx_rails"
 gem "roo"
 
+gem "dotenv-rails"
+
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
