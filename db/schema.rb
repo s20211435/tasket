@@ -10,11 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_23_130338) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_28_081418) do
   create_table "categories", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "events", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.date "start_time", null: false
+    t.date "end_time"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "end_time"], name: "index_events_on_user_id_and_end_time", unique: true
+    t.index ["user_id", "start_time"], name: "index_events_on_user_id_and_start_time", unique: true
+    t.index ["user_id"], name: "index_events_on_user_id"
   end
 
   create_table "products", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
@@ -47,5 +60,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_23_130338) do
     t.check_constraint "`role` in ('superuser','user')", name: "role_check"
   end
 
+  add_foreign_key "events", "users"
   add_foreign_key "products", "categories"
 end
