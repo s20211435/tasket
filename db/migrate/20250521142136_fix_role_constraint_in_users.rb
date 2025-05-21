@@ -1,21 +1,25 @@
 class FixRoleConstraintInUsers < ActiveRecord::Migration[8.0]
   def up
-    # 既存の制約を削除（存在しない場合でもエラーを無視）
-    begin
-      remove_check_constraint :users, name: "role_check"
-    rescue ActiveRecord::StatementInvalid
-      # 制約が存在しない場合は無視
-    end
+    # 既存の制約を削除（エラーを無視）
+    execute <<-SQL
+      ALTER TABLE users DROP CONSTRAINT IF EXISTS role_check;
+    SQL
 
     # 新しい制約を追加
-    add_check_constraint :users, "role IN ('superuser', 'user', 'admin')", name: "role_check"
+    execute <<-SQL
+      ALTER TABLE users ADD CONSTRAINT role_check CHECK (role IN ('superuser', 'user', 'admin'));
+    SQL
   end
 
   def down
-    # 制約を削除
-    remove_check_constraint :users, name: "role_check"
+    # 新しい制約を削除
+    execute <<-SQL
+      ALTER TABLE users DROP CONSTRAINT IF EXISTS role_check;
+    SQL
 
     # 元の制約を再追加
-    add_check_constraint :users, "role IN ('superuser', 'user')", name: "role_check"
+    execute <<-SQL
+      ALTER TABLE users ADD CONSTRAINT role_check CHECK (role IN ('superuser', 'user'));
+    SQL
   end
 end
