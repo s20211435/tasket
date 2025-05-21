@@ -1,25 +1,15 @@
 class FixRoleConstraintInUsers < ActiveRecord::Migration[8.0]
   def up
-    # 既存の制約を削除
+    # カラムを`ENUM`型に変更
     execute <<-SQL
-      ALTER TABLE users DROP CONSTRAINT IF EXISTS role_check;
-    SQL
-
-    # 新しい制約を追加
-    execute <<-SQL
-      ALTER TABLE users ADD CONSTRAINT role_check CHECK (role IN ("superuser", "user", "admin"));
+      ALTER TABLE users MODIFY COLUMN role ENUM('superuser', 'user', 'admin') NOT NULL;
     SQL
   end
 
   def down
-    # 新しい制約を削除
+    # 元のカラム定義に戻す（例: `VARCHAR`型）
     execute <<-SQL
-      ALTER TABLE users DROP CONSTRAINT IF EXISTS role_check;
-    SQL
-
-    # 元の制約を再追加
-    execute <<-SQL
-      ALTER TABLE users ADD CONSTRAINT role_check CHECK (role IN ("superuser", "user"));
+      ALTER TABLE users MODIFY COLUMN role VARCHAR(255) NOT NULL;
     SQL
   end
 end

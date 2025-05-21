@@ -97,10 +97,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_21_142136) do
     t.datetime "discarded_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "role", default: "user", null: false
+    t.column "role", "enum('superuser','user','admin')", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.check_constraint "`role` in ('superuser','user','admin')", name: "role_check"
+    t.check_constraint "`role` in ('superuser','user')", name: "role_check"
   end
 
   add_foreign_key "events", "users"
