@@ -51,6 +51,7 @@ test:
 production:
   primary: &primary_production
     <<: *default
+    adapter: postgresql
     database: tasket_web_production
     username: tasket_web
     password: <%= ENV["TASKET_U_WEB_DATABASE_PASSWORD"] %>
