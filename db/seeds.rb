@@ -9,17 +9,17 @@
 #   end
 
 # スーパーユーザーを作成
-User.create!(
-  email: "superuser@example.com",
-  password: "password",
-  password_confirmation: "password",
-  role: "superuser" # スーパーユーザーの役割を示す
-)
+User.find_or_create_by!(email: "superuser@example.com") do |user|
+  user.name = "Super User" # 必須の`name`を設定
+  user.password = "password"
+  user.password_confirmation = "password"
+  user.role = "superuser" # スーパーユーザーの役割を示す
+end
 
 # 一般ユーザーを作成
-User.create!(
-  email: "user@example.com",
-  password: "password",
-  password_confirmation: "password",
-  role: "user" # 一般ユーザーの役割を示す
-)
+User.find_or_create_by!(email: "user@example.com") do |user|
+  user.name = "Regular User" # 必須の`name`を設定
+  user.password = "password"
+  user.password_confirmation = "password"
+  user.role = "user" # 一般ユーザーの役割を示す
+end
