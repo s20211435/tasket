@@ -51,6 +51,7 @@ test:
 production:
   primary: &primary_production
     <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
     adapter: postgresql
     database: tasket_web_production
     username: tasket_web

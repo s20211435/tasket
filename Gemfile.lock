@@ -80,7 +80,6 @@ GEM
     bcrypt_pbkdf (1.1.1)
     benchmark (0.4.0)
     bigdecimal (3.1.9)
-    bindex (0.8.1)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
     bootstrap5-kaminari-views (0.0.1)
@@ -425,11 +424,6 @@ GEM
     useragent (0.16.11)
     warden (1.2.9)
       rack (>= 2.0.9)
-    web-console (4.2.1)
-      actionview (>= 6.0.0)
-      activemodel (>= 6.0.0)
-      bindex (>= 0.4.0)
-      railties (>= 6.0.0)
     websocket (1.2.11)
     websocket-driver (0.7.7)
       base64
@@ -489,7 +483,6 @@ DEPENDENCIES
   thruster
   turbo-rails
   tzinfo-data
-  web-console
 
 BUNDLED WITH
    2.6.6
