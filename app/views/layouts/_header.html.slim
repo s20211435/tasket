@@ -39,7 +39,7 @@
     - if current_user && current_user.respond_to?(:user_menus)
       - current_user.user_menus.includes(:menu).joins(:menu).where(active: true).order('menus.display_order').each do |user_menu|
         .col-12.mb-3
-          = link_to send(user_menu.menu.path), class: "link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-0-hover d-flex flex-column align-items-center #{'text-muted' unless current_page?(send(user_menu.menu.path))}" do
+          = link_to resolve_path(user_menu.menu.path), class: "link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-0-hover d-flex flex-column align-items-center #{'text-muted' unless current_page?(send(user_menu.menu.path))}" do
             i.fa-solid class="#{user_menu.menu.icon} fa-4x mb-2"
             span.fw-bold = user_menu.menu.name
     - else
