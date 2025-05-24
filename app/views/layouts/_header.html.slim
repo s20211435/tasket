@@ -20,7 +20,7 @@
           - if current_user && current_user.respond_to?(:user_menus)
             - current_user.user_menus.includes(:menu).joins(:menu).where(active: true).order('menus.display_order').each do |user_menu|
               li.nav-item
-                = link_to send(user_menu.menu.path), class: "nav-link #{'text-muted' unless current_page?(send(user_menu.menu.path))}" do
+                = link_to resolve_path(user_menu.menu.path), class: "nav-link #{'text-muted' unless current_page?(resolve_path(user_menu.menu.path))}" do
                   i.fa-solid class="#{user_menu.menu.icon} fa-lg"
                   span.ms-2 = user_menu.menu.name
           - else
