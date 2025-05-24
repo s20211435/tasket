@@ -51,3 +51,22 @@ if Menu.count.zero?
 else
   puts "メニューは既に存在します"
 end
+
+# メニューマスタの修正データ
+menus = [
+  { name: 'ホーム', path: '/', icon: 'fa-house', display_order: 1, active: true, role: nil },
+  { name: '商品', path: '/products', icon: 'fa-cart-shopping', display_order: 2, active: true, role: nil },
+  { name: 'カテゴリ', path: '/categories', icon: 'fa-list', display_order: 3, active: true, role: nil },
+  { name: '商品金額計算', path: '/products/calculate', icon: 'fa-calculator', display_order: 4, active: true, role: nil },
+  { name: 'CSV取り込み', path: '/products/import_csv', icon: 'fa-file-import', display_order: 5, active: true, role: nil },
+  { name: 'メニュー管理', path: '/menus', icon: 'fa-bars', display_order: 6, active: true, role: nil }
+]
+
+# 既存のメニューを更新
+menus.each do |menu_data|
+  menu = Menu.find_by(name: menu_data[:name])
+  if menu
+    menu.update!(path: menu_data[:path])
+    puts "メニュー「#{menu.name}」のパスを更新しました: #{menu.path}"
+  end
+end
