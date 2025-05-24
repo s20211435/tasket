@@ -56,3 +56,15 @@ production:
     database: tasket_web_production
     username: tasket_web
     password: <%= ENV["TASKET_U_WEB_DATABASE_PASSWORD"] %>
+  cache:
+    <<: *primary_production
+    database: tasket_web_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: tasket_web_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: tasket_web_production_cable
+    migrations_paths: db/cable_migrate
