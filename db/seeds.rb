@@ -74,20 +74,14 @@ end
 # ユーザーメニューの関連付け
 puts "ユーザーメニューの関連付けを開始します..."
 
-# 既存のユーザーメニューを削除（オプション）
-# UserMenu.delete_all
-
 users = User.all
 menus = Menu.all
 
 # すべてのユーザーに対してメニューを関連付け
 users.each do |user|
   menus.each do |menu|
-    # 管理者ユーザーにはすべてのメニューを表示
-    # 一般ユーザーには管理メニュー以外を表示
-    should_add = user.role == "superuser" ||
-                (user.role == "user" && menu.name != "メニュー管理")
-    if should_add && !UserMenu.exists?(user_id: user.id, menu_id: menu.id)
+    # すべてのユーザーにすべてのメニューを表示（条件を削除）
+    if !UserMenu.exists?(user_id: user.id, menu_id: menu.id)
       UserMenu.create!(
         user_id: user.id,
         menu_id: menu.id,
