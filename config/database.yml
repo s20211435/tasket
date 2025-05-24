@@ -56,21 +56,3 @@ production:
     database: tasket_web_production
     username: tasket_web
     password: <%= ENV["TASKET_U_WEB_DATABASE_PASSWORD"] %>
-  cache:
-    <<: *default
-    url: <%= ENV.fetch("CACHE_DATABASE_URL", ENV["DATABASE_URL"]) %>
-    adapter: postgresql
-    database: tasket_web_production_cache
-    migrations_paths: db/cache_migrate
-  queue:
-    <<: *default
-    url: <%= ENV.fetch("QUEUE_DATABASE_URL", ENV["DATABASE_URL"]) %>
-    adapter: postgresql
-    database: tasket_web_production_queue
-    migrations_paths: db/queue_migrate
-  cable:
-    <<: *default
-    url: <%= ENV.fetch("CABLE_DATABASE_URL", ENV["DATABASE_URL"]) %>
-    adapter: postgresql
-    database: tasket_web_production_cable
-    migrations_paths: db/cable_migrate
