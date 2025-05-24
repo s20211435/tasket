@@ -32,3 +32,14 @@ ja:
       unconfirmed: "メールアドレスの確認が必要です。"
       timeout: "セッションがタイムアウトしました。再度ログインしてください。"
       inactive: "アカウントが無効です。"
+      not_found_in_database: "該当するユーザーが見つかりませんでした。"
+  errors:
+    messages:
+      not_saved: "登録に失敗しました。"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            password_confirmation:
+              confirmation: "がパスワードと一致しません。"

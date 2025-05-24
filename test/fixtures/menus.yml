@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  path: MyString
+  icon: MyString
+  display_order: 1
+  active: false
+  role: MyString
+
+two:
+  name: MyString
+  path: MyString
+  icon: MyString
+  display_order: 1
+  active: false
+  role: MyString
