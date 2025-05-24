@@ -73,5 +73,4 @@ production:
     url: <%= ENV.fetch("CABLE_DATABASE_URL", ENV["DATABASE_URL"]) %>
     adapter: postgresql
     database: tasket_web_production_cable
-
-    migrations_paths: db/cable_migrate    migrations_paths: db/cable_migrate
+    migrations_paths: db/cable_migrate
