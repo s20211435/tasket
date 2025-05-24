@@ -70,3 +70,32 @@ menus.each do |menu_data|
     puts "メニュー「#{menu.name}」のパスを更新しました: #{menu.path}"
   end
 end
+
+# ユーザーメニューの関連付け
+puts "ユーザーメニューの関連付けを開始します..."
+
+# 既存のユーザーメニューを削除（オプション）
+# UserMenu.delete_all
+
+users = User.all
+menus = Menu.all
+
+# すべてのユーザーに対してメニューを関連付け
+users.each do |user|
+  menus.each do |menu|
+    # 管理者ユーザーにはすべてのメニューを表示
+    # 一般ユーザーには管理メニュー以外を表示
+    should_add = user.role == "superuser" ||
+                (user.role == "user" && menu.name != "メニュー管理")
+    if should_add && !UserMenu.exists?(user_id: user.id, menu_id: menu.id)
+      UserMenu.create!(
+        user_id: user.id,
+        menu_id: menu.id,
+        active: true
+      )
+      puts "ユーザー「#{user.name}」にメニュー「#{menu.name}」を関連付けました"
+    end
+  end
+end
+
+puts "ユーザーメニューの関連付けが完了しました"
