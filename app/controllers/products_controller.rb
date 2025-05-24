@@ -37,6 +37,7 @@ class ProductsController < ApplicationController
 
   def create
     @product = Product.new(product_params)
+    @product.user = current_user
 
     if @product.save
       respond_to do |format|
@@ -123,8 +124,8 @@ class ProductsController < ApplicationController
   end
 
   def calculate
-    @categories = Category.where(user: current_user) # ユーザーに関連するカテゴリー
-    @products = Product.where(user: current_user)   # ユーザーに関連する商品
+    @categories = Category.where(user: current_user)
+    @products = Product.where(user: current_user, discarded_at: nil)
   end
 
   def export_empty_csv
