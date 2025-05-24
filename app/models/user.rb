@@ -6,6 +6,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   before_validation :set_default_role, on: :create
+  after_create :initialize_menu_settings
 
   ROLES = { superuser: "管理者", user: "一般" }.freeze
 

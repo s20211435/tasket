@@ -16,16 +16,29 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if @user.save
-      respond_to do |format|
-        format.turbo_stream
-        format.html { redirect_to users_path, notice: "ユーザーが作成されました。" }
+
+    # トランザクションを使用して、ユーザー作成とメニュー関連付けを一括で行う
+    User.transaction do
+      if @user.save
+        # ApplicationControllerのメソッドを呼び出し
+        assign_all_menus_to_user(@user)
+
+        respond_to do |format|
+          format.turbo_stream
+          format.html { redirect_to users_path, notice: "ユーザー登録が成功しました。" }
+        end
+      else
+        respond_to do |format|
+          format.turbo_stream { render turbo_stream: turbo_stream.replace("user_form", partial: "form", locals: { user: @user }) }
+          format.html { render :new }
+        end
       end
-    else
-      respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("user_form", partial: "form", locals: { user: @user }) }
-        format.html { render :new }
-      end
+    end
+  rescue ActiveRecord::RecordInvalid => e
+    @user.errors.add(:base, "メニュー関連付けに失敗しました: #{e.message}") if @user.errors.empty?
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace("user_form", partial: "form", locals: { user: @user }) }
+      format.html { render :new }
     end
   end
 
