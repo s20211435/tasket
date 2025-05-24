@@ -2,6 +2,7 @@ class Product < ApplicationRecord
   include Discard::Model
   # category_idカラムを使用して、Categoryモデルと関連付け
   belongs_to :category, optional: true  # optional: true で関連を任意に設定
+  belongs_to :user
 
   validates :name, presence: true
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }

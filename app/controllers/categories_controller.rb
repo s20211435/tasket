@@ -1,13 +1,14 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!
 
   def index
-    @categories = Category.all
+    @categories = current_user.categories
     @category = Category.new
   end
 
   def create
-    @category = Category.new(category_params)
+    @category = current_user.categories.build(category_params)
 
     if @category.save
       respond_to do |format|
@@ -88,7 +89,7 @@ class CategoriesController < ApplicationController
   private
 
   def set_category
-    @category = Category.find(params[:id])
+    @category = current_user.categories.find(params[:id])
   end
 
   def category_params

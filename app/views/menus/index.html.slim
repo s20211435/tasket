@@ -1,0 +1,27 @@
+h1.mb-4 メニュー管理
+
+- if @user_menus.empty?
+  .alert.alert-info メニューデータがありません。シードデータを実行してください。
+- else
+  .table-responsive
+    table.table.table-striped.table-bordered
+      thead.table-dark
+        tr
+          th 表示順
+          th 名前
+          th アイコン
+          th 状態
+          th 操作
+      tbody
+        - @user_menus.each do |user_menu|
+          tr
+            td = user_menu.menu.display_order
+            td = user_menu.menu.name
+            td
+              i.fa-solid class="#{user_menu.menu.icon}"
+              span.ms-2 = user_menu.menu.icon
+            td
+              span class="badge #{user_menu.active ? 'bg-success' : 'bg-danger'}"
+                = user_menu.active ? '表示' : '非表示'
+            td
+              = link_to '編集', edit_menu_path(user_menu.menu), class: 'btn btn-sm btn-warning'

@@ -61,9 +61,16 @@ h1.text-center.mb-5 商品金額計算
                 th 選択
             tbody(data-price-calculator-target="productList")
               - @products.each do |product|
-                tr(data-category=product.category.name data-name=product.name)
+                tr(data-category=(product.category&.name || "未分類") data-name=product.name)
                   td = product.name
                   td = "#{product.price.to_i}円"
-                  td = product.category.name
+                  td = product.category&.name || "未分類"
                   td
-                    button.btn.btn-primary(type="button" data-action="click->price-calculator#selectProduct" data-product-name=product.name data-product-price=product.price data-product-stock=product.stock_quantity data-product-category=product.category.name) 選択
+                    button.btn.btn-primary(
+                      type="button"
+                      data-action="click->price-calculator#selectProduct"
+                      data-product-name=product.name
+                      data-product-price=product.price
+                      data-product-stock=product.stock_quantity
+                      data-product-category=(product.category&.name || "未分類")
+                    ) 選択
