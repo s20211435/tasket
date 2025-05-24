@@ -27,7 +27,7 @@
             - # デフォルトのメニューを表示（ユーザーがログインしていない場合など）
             - Menu.where(active: true).order(display_order: :asc).each do |menu|
               li.nav-item
-                = link_to send(menu.path), class: "nav-link #{'text-muted' unless current_page?(send(menu.path))}" do
+                = link_to resolve_path(menu.path), class: "nav-link #{'text-muted' unless current_page?(resolve_path(menu.path))}" do
                   i.fa-solid class="#{menu.icon} fa-lg"
                   span.ms-2 = menu.name
 
@@ -39,13 +39,13 @@
     - if current_user && current_user.respond_to?(:user_menus)
       - current_user.user_menus.includes(:menu).joins(:menu).where(active: true).order('menus.display_order').each do |user_menu|
         .col-12.mb-3
-          = link_to resolve_path(user_menu.menu.path), class: "link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-0-hover d-flex flex-column align-items-center #{'text-muted' unless current_page?(send(user_menu.menu.path))}" do
+          = link_to resolve_path(user_menu.menu.path), class: "link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-0-hover d-flex flex-column align-items-center #{'text-muted' unless current_page?(resolve_path(user_menu.menu.path))}" do
             i.fa-solid class="#{user_menu.menu.icon} fa-4x mb-2"
             span.fw-bold = user_menu.menu.name
     - else
       - # デフォルトのメニューを表示（ユーザーがログインしていない場合など）
       - Menu.where(active: true).order(display_order: :asc).each do |menu|
         .col-12.mb-3
-          = link_to send(menu.path), class: "link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-0-hover d-flex flex-column align-items-center #{'text-muted' unless current_page?(send(menu.path))}" do
+          = link_to resolve_path(menu.path), class: "link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-0-hover d-flex flex-column align-items-center #{'text-muted' unless current_page?(resolve_path(menu.path))}" do
             i.fa-solid class="#{menu.icon} fa-4x mb-2"
             span.fw-bold = menu.name
