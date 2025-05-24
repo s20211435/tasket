@@ -1,10 +1,12 @@
 class ProductsController < ApplicationController
   require 'csv'
   before_action :set_product, only: %i[show edit update destroy]
+  before_action :authenticate_user!
+  before_action :set_categories, only: %i[new edit create update]
 
   def index
     @q = Product.ransack(params[:q])
-    @products = @q.result.includes(:category).page(params[:page]).per(10).where(discarded_at: nil)
+    @products = @q.result.includes(:category).page(params[:page]).per(10).where(discarded_at: nil, user_id: current_user.id)
     @product = Product.new
 
     respond_to do |format|
@@ -121,8 +123,8 @@ class ProductsController < ApplicationController
   end
 
   def calculate
-    @products = Product.includes(:category).all
-    @categories = Category.all # カテゴリ情報を取得
+    @categories = Category.where(user: current_user) # ユーザーに関連するカテゴリー
+    @products = Product.where(user: current_user)   # ユーザーに関連する商品
   end
 
   def export_empty_csv
@@ -196,8 +198,12 @@ class ProductsController < ApplicationController
 
   private
 
+  def set_categories
+    @categories = current_user.categories
+  end
+
   def set_product
-    @product = Product.find(params[:id])
+    @product = current_user.products.find(params[:id])
   end
 
   def product_params

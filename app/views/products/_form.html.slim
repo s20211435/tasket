@@ -20,7 +20,7 @@
 
     .col-12.col-md-6
       = f.label :category_id, "カテゴリ", class: "form-label fw-bold"
-      = f.collection_select :category_id, Category.all, :id, :name, { prompt: "カテゴリを選択してください" }, class: "form-select"
+      = f.collection_select :category_id, current_user.categories, :id, :name, { prompt: "カテゴリを選択してください" }, class: "form-select"
 
   .d-flex.justify-content-end.mt-4
     = f.submit '保存', class: 'btn btn-primary me-2'

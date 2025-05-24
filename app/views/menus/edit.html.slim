@@ -1,0 +1,26 @@
+h1.mb-4 メニュー表示設定
+
+= form_with(model: @user_menu, url: menu_path(@menu), method: :patch, local: true) do |f|
+  - if @user_menu.errors.any?
+    .alert.alert-danger
+      h4 = "#{@user_menu.errors.count}件のエラーがあります"
+      ul
+        - @user_menu.errors.full_messages.each do |message|
+          li = message
+
+  .card.mb-4
+    .card-header
+      h5 = @menu.name
+      p.mb-0
+        i.fa-solid class="#{@menu.icon} me-2"
+        | パス: #{@menu.path}
+        span.ms-3 表示順: #{@menu.display_order}
+
+    .card-body
+      .mb-3.form-check
+        = f.check_box :active, class: 'form-check-input'
+        = f.label :active, 'このメニューを表示する', class: 'form-check-label'
+
+  .mb-3
+    = f.submit '保存', class: 'btn btn-primary'
+    = link_to 'キャンセル', menus_path, class: 'btn btn-secondary ms-2'

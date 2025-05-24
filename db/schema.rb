@@ -10,11 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_13_150933) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_24_102224) do
   create_table "categories", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_categories_on_user_id"
   end
 
   create_table "events", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
@@ -30,6 +32,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_13_150933) do
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
+  create_table "menus", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "path"
+    t.string "icon"
+    t.integer "display_order"
+    t.boolean "active"
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_menus_on_name", unique: true
+    t.index ["path"], name: "index_menus_on_path", unique: true
+    t.index ["role"], name: "index_menus_on_role"
+  end
+
   create_table "products", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -40,8 +56,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_13_150933) do
     t.datetime "updated_at", null: false
     t.bigint "category_id"
     t.datetime "discarded_at"
+    t.bigint "user_id", null: false
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["discarded_at"], name: "index_products_on_discarded_at"
+    t.index ["user_id"], name: "index_products_on_user_id"
   end
 
   create_table "reminders", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
@@ -89,6 +107,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_13_150933) do
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
+  create_table "user_menus", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "menu_id", null: false
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["menu_id"], name: "index_user_menus_on_menu_id"
+    t.index ["user_id", "menu_id"], name: "index_user_menus_on_user_id_and_menu_id", unique: true
+    t.index ["user_id"], name: "index_user_menus_on_user_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -102,9 +131,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_13_150933) do
     t.string "role", default: "user", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.check_constraint "`role` in ('superuser','user')", name: "role_check"
   end
 
+  add_foreign_key "categories", "users"
   add_foreign_key "events", "users"
   add_foreign_key "products", "categories"
   add_foreign_key "reminders", "events"
@@ -112,4 +141,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_13_150933) do
   add_foreign_key "task_tags", "tasks"
   add_foreign_key "tasks", "tasks", column: "parent_id"
   add_foreign_key "tasks", "users"
+  add_foreign_key "user_menus", "menus"
+  add_foreign_key "user_menus", "users"
 end

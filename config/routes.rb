@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   # ユーザ管理画面のルートを追加
   resources :users, only: [:index, :new, :create, :edit, :update, :destroy] # ユーザ管理画面（スーパーユーザー用）
+  resources :menus, only: [:index, :edit, :update]
 
   # 商品管理画面のルートを追加
   resources :categories
