@@ -11,7 +11,6 @@ h1.mb-4 メニュー管理
           th 名前
           th アイコン
           th 状態
-          th 操作
       tbody
         - @user_menus.each do |user_menu|
           tr
@@ -21,7 +20,8 @@ h1.mb-4 メニュー管理
               i.fa-solid class="#{user_menu.menu.icon}"
               span.ms-2 = user_menu.menu.icon
             td
-              span class="badge #{user_menu.active ? 'bg-success' : 'bg-danger'}"
-                = user_menu.active ? '表示' : '非表示'
-            td
-              = link_to '編集', edit_menu_path(user_menu.menu), class: 'btn btn-sm btn-warning'
+              / スイッチトグル
+              = form_with url: toggle_active_menu_path(user_menu.menu), method: :patch, local: true, class: "d-inline" do |f|
+                label.switch
+                  = f.check_box :active, checked: user_menu.active, onchange: 'this.form.submit();'
+                  span.slider

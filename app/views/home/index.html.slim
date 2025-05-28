@@ -3,31 +3,39 @@
 
   .row.row-cols-1.row-cols-md-3.g-4
     .col
-      .card.h-100
-        .card-body.text-center
-          i.fa-solid.fa-cart-shopping.fa-3x.mb-3
+      = link_to products_path, class: 'card h-100 text-decoration-none text-dark hover-darken', style: 'cursor:pointer;' do
+        .card-body.text-center.mt-3
+          i.fa-solid.fa-cart-shopping.fa-4x.mb-3
           h5.card-title 商品管理
-          = link_to '商品管理へ', products_path, class: 'btn btn-primary'
 
     .col
-      .card.h-100
-        .card-body.text-center
-          i.fa-solid.fa-list.fa-3x.mb-3
+      = link_to categories_path, class: 'card h-100 text-decoration-none text-dark hover-darken', style: 'cursor:pointer;' do
+        .card-body.text-center.mt-3
+          i.fa-solid.fa-list.fa-4x.mb-3
           h5.card-title カテゴリ管理
-          = link_to 'カテゴリ管理へ', categories_path, class: 'btn btn-primary'
 
     .col
-      .card.h-100
-        .card-body.text-center
-          i.fa-solid.fa-calculator.fa-3x.mb-3
+      = link_to calculate_products_path, class: 'card h-100 text-decoration-none text-dark hover-darken', style: 'cursor:pointer;' do
+        .card-body.text-center.mt-3
+          i.fa-solid.fa-calculator.fa-4x.mb-3
           h5.card-title 商品金額計算
-          = link_to '金額計算へ', calculate_products_path, class: 'btn btn-primary'
 
     .col
-      .card.h-100
-        .card-body.text-center
-          i.fa-solid.fa-file-import.fa-3x.mb-3
+      = link_to import_csv_products_path, class: 'card h-100 text-decoration-none text-dark hover-darken', style: 'cursor:pointer;' do
+        .card-body.text-center.mt-3
+          i.fa-solid.fa-file-import.fa-4x.mb-3
           h5.card-title 商品CSV取り込み
-          = link_to 'CSV取り込みへ', import_csv_products_path, class: 'btn btn-primary'
+
+    .col
+      = link_to menus_path, class: 'card h-100 text-decoration-none text-dark hover-darken', style: 'cursor:pointer;' do
+        .card-body.text-center.mt-3
+          i.fa-solid.fa-list-check.fa-4x.mb-3
+          h5.card-title メニュー
+
+    .col
+      = link_to events_path, class: 'card h-100 text-decoration-none text-dark hover-darken', style: 'cursor:pointer;' do
+        .card-body.text-center.mt-3
+          i.fa-solid.fa-solid.fa-calendar-days.fa-4x.mb-3
+          h5.card-title イベント
 
 

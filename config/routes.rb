@@ -8,7 +8,9 @@ Rails.application.routes.draw do
 
   # ユーザ管理画面のルートを追加
   resources :users, only: [:index, :new, :create, :edit, :update, :destroy] # ユーザ管理画面（スーパーユーザー用）
-  resources :menus, only: [:index, :edit, :update]
+  resources :menus, only: [:index, :edit, :update] do
+    patch :toggle_active, on: :member
+  end
 
   # 商品管理画面のルートを追加
   resources :categories
@@ -23,6 +25,8 @@ Rails.application.routes.draw do
       get :search
     end
   end
+
+  resources :events
 
   # アプリケーションのルート設定
   get "up" => "rails/health#show", as: :rails_health_check
