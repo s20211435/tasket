@@ -1,21 +1,21 @@
-# MySQL. Versions 5.6.4 and up are supported.
+# PostgreSQL. Versions 9.4 and up are supported.
 #
-# Install the MySQL driver
-#   gem install mysql2
+# Install the PostgreSQL driver
+#   gem install pg
 #
-# Ensure the MySQL gem is defined in your Gemfile
-#   gem "mysql2"
+# Ensure the PostgreSQL gem is defined in your Gemfile
+#   gem "pg"
 #
 # And be sure to use new-style password hashing:
 #   https://dev.mysql.com/doc/refman/5.7/en/password-hashing.html
 #
 default: &default
-  adapter: mysql2
-  encoding: utf8mb4
+  adapter: <%= ENV.fetch("DB_ADAPTER", "mysql2") %>
+  encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: root
-  password:
-  host: <%= ENV.fetch("DB_HOST") { "127.0.0.1" } %>
+  username: <%= ENV.fetch("DB_USER", "root") %>
+  password: <%= ENV.fetch("DB_PASSWORD", "") %>
+  host: <%= ENV.fetch("DB_HOST", "localhost") %>
 
 development:
   <<: *default
@@ -51,6 +51,8 @@ test:
 production:
   primary: &primary_production
     <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
+    adapter: postgresql
     database: tasket_web_production
     username: tasket_web
     password: <%= ENV["TASKET_U_WEB_DATABASE_PASSWORD"] %>
