@@ -1,0 +1,18 @@
+= form_with model: @event, local: true do |f|
+  .mb-3
+    = f.label :name, 'イベント名', class: 'form-label'
+    = f.text_field :name, class: 'form-control', required: true
+
+  .mb-3
+    = f.label :start_date, '開始日', class: 'form-label'
+    = f.date_field :start_date, class: 'form-control', required: true
+
+  .mb-3
+    = f.label :end_date, '終了日', class: 'form-label'
+    = f.date_field :end_date, class: 'form-control', required: true
+
+  .mb-3
+    = f.label :description, '説明', class: 'form-label'
+    = f.text_area :description, class: 'form-control'
+
+  = f.submit submit_label, class: 'btn btn-primary'

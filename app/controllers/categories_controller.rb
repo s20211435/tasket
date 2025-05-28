@@ -73,16 +73,15 @@ class CategoriesController < ApplicationController
   end
 
   def destroy
-    @category.destroy
+    @category = Category.find(params[:id])
 
-    respond_to do |format|
-      format.turbo_stream {
-        render turbo_stream: [
-          turbo_stream.remove("category_#{@category.id}"),
-          turbo_stream.prepend("flash_messages", partial: "shared/flash", locals: { flash_type: "success", message: "カテゴリが削除されました。" })
-        ]
-      }
-      format.html { redirect_to categories_path, notice: 'カテゴリが削除されました。' }
+    if @category.products.exists?
+      flash[:alert] = "このカテゴリは使用されているため削除できません。"
+      redirect_to categories_path
+    else
+      @category.destroy
+      flash[:notice] = "カテゴリを削除しました。"
+      redirect_to categories_path
     end
   end
 

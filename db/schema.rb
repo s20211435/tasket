@@ -27,6 +27,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_22_124606) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["user_id", "end_time"], name: "index_events_on_user_id_and_end_time", unique: true
+    t.index ["user_id", "start_time"], name: "index_events_on_user_id_and_start_time", unique: true
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 

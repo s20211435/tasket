@@ -76,6 +76,10 @@
   }
 }
 
+.hover-darken:hover {
+  filter: brightness(85%);
+}
+
 /* 全体のフォントを統一 */
 body {
   font-family: 'Kosugi Maru', sans-serif;

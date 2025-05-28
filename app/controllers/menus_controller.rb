@@ -1,6 +1,6 @@
 class MenusController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_menu, only: [:edit, :update]
+  before_action :set_menu, only: [:edit, :update, :toggle_active]
 
   def index
     # 初回アクセス時にユーザーのメニュー設定を初期化
@@ -23,6 +23,13 @@ class MenusController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def toggle_active
+    @user_menu = current_user.user_menus.find_or_initialize_by(menu: @menu)
+    @user_menu.active = !@user_menu.active
+    @user_menu.save
+    redirect_to menus_path
   end
 
   private

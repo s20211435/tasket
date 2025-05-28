@@ -1,0 +1,22 @@
+#products data-product-frame-target="productsList"
+  .row.g-3
+    - products.each do |product|
+      .col-12.col-md-6.col-lg-4
+        .card.shadow-sm.border-0
+          .card-body
+            h5.card-title.fw-bold.mb-2 = product.name
+            p.card-text.text-muted.mb-1 = product.category.name if product.category
+            p.card-text.fw-bold.text-primary.mb-1 = "#{number_to_currency(product.price, unit: '', precision: 0)}円"
+            p.card-text.fw-bold.text-success.mb-3 = "#{product.stock_quantity}個"
+            .d-flex.justify-content-between
+              = link_to product_path(product), class: 'btn btn-outline-primary btn-sm', data: { turbo_frame: "product_details_#{product.id}" } do
+                i.fa-solid.fa-server.me-1
+                | 詳細
+              = link_to edit_product_path(product), class: 'btn btn-outline-secondary btn-sm', data: { turbo_frame: "product_details_#{product.id}" } do
+                i.fas.fa-edit.me-1
+                | 編集
+              = link_to product_path(product), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-outline-danger btn-sm' do
+                i.fas.fa-trash.me-1
+                | 削除
+
+= paginate products, theme: "bootstrap-5"

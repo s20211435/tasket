@@ -3,7 +3,8 @@ class EventsController < ApplicationController
 
   # GET /events
   def index
-    @events = Event.all
+    @q = Event.ransack(params[:q])
+    @events = @q.result.includes(:user).page(params[:page]).per(10).where(discarded_at: nil, user_id: current_user.id)
   end
 
   # GET /events/:id

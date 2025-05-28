@@ -7,17 +7,22 @@ class ProductsController < ApplicationController
   def index
     @q = Product.ransack(params[:q])
     @products = @q.result.includes(:category).page(params[:page]).per(10).where(discarded_at: nil, user_id: current_user.id)
+
+    # 並び替えの処理
+    if params[:sort].present?
+      @products = @products.order(params[:sort] => params[:direction] || 'asc')
+    end
+
     @product = Product.new
 
     respond_to do |format|
-      format.turbo_stream
+      format.turbo_stream { render partial: "products/list", locals: { products: @products } }
       format.html
       format.xlsx do
         response.headers["Content-Disposition"] = 'attachment; filename="products.xlsx"'
       end
       format.csv { send_data generate_csv(@products), filename: "商品一覧_#{Time.zone.now.strftime('%Y%m%d')}.csv" }
       format.json {
-        # 最後に更新された商品の更新日時を返す
         latest_update = @products.maximum(:updated_at)&.iso8601 || Time.current.iso8601
         render json: { last_update: latest_update, count: @products.count }
       }
