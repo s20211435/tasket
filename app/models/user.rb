@@ -17,10 +17,28 @@ class User < ApplicationRecord
   has_many :products, dependent: :destroy
   has_many :user_menus, dependent: :destroy
   has_many :menus, through: :user_menus
+  has_many :events, dependent: :destroy
+  has_many :reminders, through: :events
 
   # スーパーユーザー判定メソッド
   def superuser?
-    self.role == "superuser" # 例: roleカラムが"superuser"の場合
+    self.role == "superuser"
+  end
+
+  # 本日のリマインダーを取得するメソッド
+  def today_reminders
+    reminders.today.for_kept_events.by_date
+  end
+
+  # 未確認の本日のリマインダーがあるかチェック
+  def has_today_reminders?
+    today_reminders.exists?
+  end
+
+  # 今日初回ログインかどうかを判定
+  def first_login_today?
+    return true if last_sign_in_at.nil? # 初回ログイン
+    last_sign_in_at < Time.current.beginning_of_day
   end
 
   # ユーザーの表示メニューを取得するメソッド

@@ -1,0 +1,93 @@
+- content_for :title, "#{@reminder.title} - リマインダー詳細"
+
+.container.mx-auto.px-4.py-6
+  .bg-white.rounded-lg.shadow-md.p-6
+    .flex.justify-between.items-start.mb-6
+      div
+        h1.text-2xl.font-bold.text-gray-800 = @reminder.title
+        p.text-gray-600.mt-1
+          | イベント: 
+          = link_to @event.title, event_path(@event), class: "text-blue-600 hover:text-blue-800"
+      .flex.space-x-2
+        = link_to edit_event_reminder_path(@event, @reminder), 
+            class: "bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded transition duration-200" do
+          i.fas.fa-edit.mr-2
+          | 編集
+        = link_to event_reminder_path(@event, @reminder), 
+            method: :delete,
+            data: { 
+              confirm: "このリマインダーを削除しますか？",
+              turbo_method: :delete
+            },
+            class: "bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-200" do
+          i.fas.fa-trash.mr-2
+          | 削除
+
+    .grid.grid-cols-1.md:grid-cols-2.gap-6
+      .space-y-4
+        div
+          label.block.text-sm.font-medium.text-gray-700.mb-1
+            | リマインダータイトル
+          .p-3.bg-gray-50.rounded-md
+            p.text-gray-900 = @reminder.title
+
+        div
+          label.block.text-sm.font-medium.text-gray-700.mb-1
+            | リマインド日時
+          .p-3.bg-gray-50.rounded-md
+            p.text-gray-900
+              = l(@reminder.remind_at, format: :long)
+
+        div
+          label.block.text-sm.font-medium.text-gray-700.mb-1
+            | ステータス
+          .p-3.bg-gray-50.rounded-md
+            - if @reminder.remind_at > Time.current
+              span.inline-flex.px-3.py-1.text-sm.font-semibold.rounded-full.bg-green-100.text-green-800
+                i.fas.fa-clock.mr-2
+                | 予定
+            - else
+              span.inline-flex.px-3.py-1.text-sm.font-semibold.rounded-full.bg-gray-100.text-gray-800
+                i.fas.fa-check.mr-2
+                | 過去
+
+      .space-y-4
+        div
+          label.block.text-sm.font-medium.text-gray-700.mb-1
+            | 作成日時
+          .p-3.bg-gray-50.rounded-md
+            p.text-gray-900
+              = l(@reminder.created_at, format: :long)
+
+        div
+          label.block.text-sm.font-medium.text-gray-700.mb-1
+            | 最終更新日時
+          .p-3.bg-gray-50.rounded-md
+            p.text-gray-900
+              = l(@reminder.updated_at, format: :long)
+
+        div
+          label.block.text-sm.font-medium.text-gray-700.mb-1
+            | 残り時間
+          .p-3.bg-gray-50.rounded-md
+            - time_diff = @reminder.remind_at - Time.current
+            - if time_diff > 0
+              p.text-green-600.font-semibold
+                i.fas.fa-hourglass-half.mr-2
+                = distance_of_time_in_words(Time.current, @reminder.remind_at)
+                | 後
+            - else
+              p.text-gray-600
+                i.fas.fa-history.mr-2
+                = distance_of_time_in_words(@reminder.remind_at, Time.current)
+                | 前
+
+    .mt-8.pt-6.border-t.flex.justify-between
+      = link_to event_reminders_path(@event), 
+          class: "text-gray-600 hover:text-gray-800 transition duration-200" do
+        i.fas.fa-arrow-left.mr-2
+        | リマインダー一覧に戻る
+      = link_to event_path(@event), 
+          class: "text-blue-600 hover:text-blue-800 transition duration-200" do
+        i.fas.fa-calendar.mr-2
+        | イベントを表示

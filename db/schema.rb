@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_22_124606) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_30_155042) do
   create_table "categories", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -19,17 +19,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_22_124606) do
     t.index ["user_id"], name: "index_categories_on_user_id"
   end
 
-  create_table "events", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
-    t.string "title", null: false
+  create_table "events", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+    t.string "name", null: false
     t.text "description"
-    t.date "start_time", null: false
-    t.date "end_time"
-    t.bigint "user_id", null: false
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.datetime "discarded_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "discarded_at"
-    t.index ["user_id", "end_time"], name: "index_events_on_user_id_and_end_time", unique: true
-    t.index ["user_id", "start_time"], name: "index_events_on_user_id_and_start_time", unique: true
+    t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
@@ -117,51 +115,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_22_124606) do
     t.index ["menu_id"], name: "index_user_menus_on_menu_id"
     t.index ["user_id", "menu_id"], name: "index_user_menus_on_user_id_and_menu_id", unique: true
     t.index ["user_id"], name: "index_user_menus_on_user_id"
-  end
-
-  create_table "reminders", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
-    t.string "title"
-    t.datetime "remind_at"
-    t.bigint "event_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["event_id", "remind_at"], name: "index_reminders_on_event_id_and_remind_at", unique: true
-    t.index ["event_id"], name: "index_reminders_on_event_id"
-    t.index ["remind_at"], name: "index_reminders_on_remind_at"
-  end
-
-  create_table "tags", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_tags_on_name", unique: true
-  end
-
-  create_table "task_tags", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
-    t.bigint "task_id", null: false
-    t.bigint "tag_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["tag_id"], name: "index_task_tags_on_tag_id"
-    t.index ["task_id", "tag_id"], name: "index_task_tags_on_task_id_and_tag_id", unique: true
-    t.index ["task_id"], name: "index_task_tags_on_task_id"
-  end
-
-  create_table "tasks", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.string "status"
-    t.string "priority"
-    t.datetime "due_date"
-    t.bigint "user_id", null: false
-    t.bigint "parent_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["parent_id"], name: "index_tasks_on_parent_id"
-    t.index ["user_id", "due_date"], name: "index_tasks_on_user_id_and_due_date", unique: true
-    t.index ["user_id", "priority"], name: "index_tasks_on_user_id_and_priority", unique: true
-    t.index ["user_id", "status"], name: "index_tasks_on_user_id_and_status", unique: true
-    t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|

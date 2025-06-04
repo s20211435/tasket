@@ -1,0 +1,159 @@
+/ イベント詳細ページ
+.container-fluid.py-4
+  .row.justify-content-center
+    .col-12.col-lg-8.col-xl-6
+      / ヘッダーセクション
+      .d-flex.justify-content-between.align-items-start.mb-4
+        .header-section
+          nav aria-label="breadcrumb"
+            ol.breadcrumb.mb-2
+              li.breadcrumb-item
+                = link_to events_path, class: 'text-decoration-none' do
+                  i.fas.fa-calendar-alt.me-1
+                  | イベント一覧
+              li.breadcrumb-item.active aria-current="page" = @event.name
+          h1.display-6.fw-bold.text-primary.mb-0 = @event.name
+        .action-section.dropdown
+          button.btn.btn-outline-primary.dropdown-toggle type="button" data-bs-toggle="dropdown"
+            i.fas.fa-cog.me-2
+            | アクション
+          ul.dropdown-menu.dropdown-menu-end.shadow
+            li
+              = link_to edit_event_path(@event), class: 'dropdown-item' do
+                i.fas.fa-edit.me-2
+                | 編集
+            li
+              hr.dropdown-divider
+            li
+              = link_to event_path(@event), data: { "turbo-method": "delete", "turbo-confirm": "「#{@event.name}」を削除してもよろしいですか？\n\nこの操作は取り消すことができません。" }, class: 'dropdown-item text-danger' do
+                i.fas.fa-trash.me-2
+                | 削除
+
+      / メインコンテンツ
+      .row.g-4
+        / イベント情報カード
+        .col-12
+          .card.shadow-sm.border-0.overflow-hidden
+            .card-header.bg-gradient.bg-primary.text-white.py-3
+              h5.card-title.mb-0.fw-bold
+                i.fas.fa-info-circle.me-2
+                | イベント詳細
+
+            .card-body.p-4
+              .row.g-4
+                / 日付情報
+                .col-md-6
+                  .info-section.p-3.bg-light.rounded
+                    .d-flex.align-items-center.mb-3
+                      .icon-wrapper.bg-success.text-white.rounded-circle.p-2.me-3
+                        i.fas.fa-play-circle
+                      div
+                        .small.text-muted.fw-semibold 開始日時
+                        .h6.mb-0.text-success
+                          = @event.start_date&.strftime('%Y年%m月%d日 %H:%M') if @event.start_date
+
+                .col-md-6
+                  .info-section.p-3.bg-light.rounded
+                    .d-flex.align-items-center.mb-3
+                      .icon-wrapper.bg-danger.text-white.rounded-circle.p-2.me-3
+                        i.fas.fa-stop-circle
+                      div
+                        .small.text-muted.fw-semibold 終了日時
+                        .h6.mb-0.text-danger
+                          = @event.end_date&.strftime('%Y年%m月%d日 %H:%M') if @event.end_date
+
+                / イベント期間
+                .col-12
+                  .info-section.p-3.bg-primary.bg-opacity-10.rounded.text-center
+                    - if @event.start_date && @event.end_date
+                      - days = (@event.end_date.to_date - @event.start_date.to_date).to_i + 1
+                      .d-flex.align-items-center.justify-content-center
+                        i.fas.fa-clock.text-primary.me-2
+                        span.fw-semibold
+                          = "期間: #{days}日間"
+                        - if @event.start_date <= Date.current && @event.end_date >= Date.current
+                          span.badge.bg-success.ms-3 開催中
+                        - elsif @event.start_date > Date.current
+                          span.badge.bg-primary.ms-3 開催予定
+                        - else
+                          span.badge.bg-secondary.ms-3 終了
+
+                / 説明
+                - if @event.description.present?
+                  .col-12
+                    .info-section.p-3.border.rounded
+                      .small.text-muted.fw-semibold.mb-2
+                        i.fas.fa-align-left.me-1
+                        | 説明
+                      .description-content
+                        = simple_format(@event.description, class: 'mb-0')
+
+        / リマインダーセクション
+        - if @event.reminders.any?
+          .col-12
+            .card.shadow-sm.border-0
+              .card-header.bg-gradient.bg-info.text-white.py-3
+                h5.card-title.mb-0.fw-bold
+                  i.fas.fa-bell.me-2
+                  | リマインダー
+                  span.badge.bg-white.text-info.ms-2 = @event.reminders.count
+
+              .card-body.p-4
+                .row.g-3
+                  - @event.reminders.each do |reminder|
+                    .col-md-6
+                      .reminder-card.p-3.border.rounded.h-100
+                        .d-flex.align-items-start.mb-2
+                          .reminder-icon.me-3
+                            - if reminder.past?
+                              i.fas.fa-check-circle.text-success
+                            - else
+                              i.fas.fa-clock.text-warning
+                          div.flex-grow-1
+                            h6.mb-1.fw-semibold = reminder.title
+                            .small.text-muted.mb-2
+                              = reminder.remind_at&.strftime('%Y年%m月%d日 %H:%M')
+                            - if reminder.past?
+                              span.badge.bg-success.small 完了
+                            - else
+                              span.badge.bg-warning.text-dark.small 予定
+
+      / アクションボタン
+      .d-flex.justify-content-between.mt-4
+        = link_to events_path, class: 'btn btn-outline-secondary btn-lg' do
+          i.fas.fa-arrow-left.me-2
+          | 一覧に戻る
+        div
+          = link_to edit_event_path(@event), class: 'btn btn-primary btn-lg me-2' do
+            i.fas.fa-edit.me-2
+            | 編集
+          = link_to event_path(@event), data: { "turbo-method": "delete", "turbo-confirm": "「#{@event.name}」を削除してもよろしいですか？\n\nこの操作は取り消すことができません。" }, class: 'btn btn-outline-danger btn-lg' do
+            i.fas.fa-trash.me-2
+            | 削除
+
+/ カスタムCSS
+css:
+  .bg-gradient {
+    background: linear-gradient(135deg, var(--bs-primary) 0%, #4c63d2 100%);
+  }
+  .bg-gradient.bg-info {
+    background: linear-gradient(135deg, var(--bs-info) 0%, #0dcaf0 100%);
+  }
+  .icon-wrapper {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .reminder-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  .reminder-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  .description-content {
+    max-height: 200px;
+    overflow-y: auto;
+  }

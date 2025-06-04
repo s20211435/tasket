@@ -32,6 +32,42 @@ end
 
 puts "ユーザーを確認しました"
 
+# テスト用のイベントとリマインダーを作成
+test_user = User.find_by(email: "user@example.com")
+if test_user
+  # 今日のテスト用イベントを作成
+  test_event = Event.find_or_create_by(
+    name: "テストイベント",
+    user: test_user
+  ) do |event|
+    event.description = "リマインダーのテスト用イベントです"
+    event.start_date = Date.current
+    event.end_date = Date.current + 1.day
+  end
+
+  # 今日の現在時刻から1分後のリマインダーを作成
+  future_time = Time.current + 1.minute
+  test_reminder = Reminder.find_or_create_by(
+    title: "テストリマインダー",
+    remind_at: future_time,
+    event: test_event
+  )
+
+  # 今日の現在時刻のリマインダーも作成
+  current_reminder = Reminder.find_or_create_by(
+    title: "現在のリマインダー",
+    remind_at: Time.current,
+    event: test_event
+  )
+
+  puts "テストイベントとリマインダーを作成しました"
+  puts "イベント: #{test_event.name}"
+  puts "リマインダー1: #{test_reminder.title} at #{test_reminder.remind_at}"
+  puts "リマインダー2: #{current_reminder.title} at #{current_reminder.remind_at}"
+else
+  puts "テストユーザーが見つかりません"
+end
+
 # メニューマスタの初期データ
 if Menu.count.zero?
   menus = [
