@@ -130,6 +130,8 @@ class ProductsController < ApplicationController
 
   def calculate
     @products = Product.includes(:category).where(user: current_user, discarded_at: nil)
+    # 念のため@categoriesを明示的に設定
+    @categories ||= Category.where(user: current_user)
   end
 
   def export_empty_csv
@@ -204,7 +206,7 @@ class ProductsController < ApplicationController
   private
 
   def set_categories
-    @categories = current_user.categories
+    @categories = Category.where(user: current_user)
   end
 
   def set_product
