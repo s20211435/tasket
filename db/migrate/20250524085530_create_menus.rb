@@ -1,9 +1,9 @@
 class CreateMenus < ActiveRecord::Migration[8.0]
   def change
+    # テーブルが存在しない場合のみ作成
     unless table_exists?(:menus)
       create_table :menus do |t|
         t.string :name
-        t.text :description
         t.string :path
         t.string :icon
         t.integer :display_order

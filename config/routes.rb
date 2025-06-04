@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
-  root "home#index" # ホーム画面
+  root 'home#index' # ホーム画面
 
   # Deviseの新規登録機能を無効化
   devise_for :users
 
-  get "home/index"
+  get 'home', to: 'home#index'
+  patch 'home/dismiss_reminder/:id', to: 'home#dismiss_reminder', as: 'dismiss_reminder'
 
   # ユーザ管理画面のルートを追加
   resources :users, only: [:index, :new, :create, :edit, :update, :destroy] # ユーザ管理画面（スーパーユーザー用）
@@ -26,7 +27,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :events
+  resources :events do
+    resources :reminders
+  end
 
   # アプリケーションのルート設定
   get "up" => "rails/health#show", as: :rails_health_check
